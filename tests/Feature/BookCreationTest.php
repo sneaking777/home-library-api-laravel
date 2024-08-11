@@ -2,8 +2,9 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Author;
+use Faker\Factory;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Tests\Traits\AssertDateFormat;
 
@@ -25,23 +26,52 @@ class BookCreationTest extends TestCase
     use AssertDateFormat;
 
     /**
+     * @var array начальные данные для книги
+     */
+    private array $bookData;
+
+    /**
+     * Наименование маршрута
+     *
+     * @var string
+     */
+    private string $route;
+
+    /**
+     * Настраивает тестовую среду перед каждым тестом.
+     * Устанавливает начальные данные для книги ($this->bookData).
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->route = route('book.store');
+        $faker = Factory::create();
+        $this->bookData = [
+            'title' => $faker->sentence(3),
+            'author_id' => $faker->numberBetween(),
+        ];
+    }
+
+
+    /**
      * Сценарий создания книги
      *
      * @return void
      */
     public function test_book_creation(): void
     {
-        $bookData = [
-            'title' => 'Sample Books Title',
-        ];
+        $author = Author::factory()->create();
+        $this->bookData['author_id'] = $author->id;
 
         $response = $this->post(
-            'api/v1/book/create',
-            $bookData,
+            $this->route,
+            $this->bookData,
             ['Accept' => 'application/json']);
         $response
-            ->assertStatus(201)
-            ->assertJson(['title' => 'Sample Books Title'], true)
+            ->assertStatus(Response::HTTP_CREATED)
+            ->assertJson(['title' => $this->bookData['title']], true)
             ->assertJsonIsObject()
             ->assertJsonStructure([
                 'title',
@@ -56,7 +86,10 @@ class BookCreationTest extends TestCase
         $this->assertDateFormat($responseArray['updated_at'], 'Y-m-d\TH:i:s.u\Z');
         $this->assertIsString($responseArray['created_at']);
         $this->assertIsNumeric($responseArray['id']);
-        $this->assertDatabaseHas('books', $bookData);
+        $this->assertDatabaseHas('books', [
+            'title' => $this->bookData['title'],
+            'author_id' => $this->bookData['author_id']
+        ]);
     }
 
     /**
@@ -66,17 +99,15 @@ class BookCreationTest extends TestCase
      */
     public function test_book_creation_with_empty_title(): void
     {
-        $bookData = [
-            'title' => '',
-        ];
+        $this->bookData['title'] = '';
 
         $response = $this->post(
-            'api/v1/book/create',
-            $bookData,
+            $this->route,
+            $this->bookData,
             ['Accept' => 'application/json']
         );
 
-        $response->assertStatus(422);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonValidationErrors(['title']);
     }
 
@@ -87,17 +118,38 @@ class BookCreationTest extends TestCase
      */
     public function test_book_creation_with_title_exceeding_max_length(): void
     {
-        $bookData = [
-            'title' => str_repeat('Sample Book Title ', 15),
-        ];
+        $this->bookData['title'] = str_repeat('Sample Book Title ', 15);
 
         $response = $this->post(
-            'api/v1/book/create',
-            $bookData,
+            $this->route,
+            $this->bookData,
             ['Accept' => 'application/json']
         );
 
-        $response->assertStatus(422);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonValidationErrors(['title']);
+    }
+
+    /**
+     * Сценария, когда при создании книги передается несуществующий ID автора
+     *
+     * @return void
+     */
+    public function test_book_creation_with_invalid_author_id(): void
+    {
+        $maxAuthorId = Author::query()->max('id');
+        $invalidAuthorId = $maxAuthorId + 1;
+        $this->bookData['author_id'] = $invalidAuthorId;
+        $response = $this->post(
+            $this->route,
+            $this->bookData,
+            ['Accept' => 'application/json']
+        );
+
+        $response
+            ->assertStatus(Response::HTTP_NOT_FOUND)
+            ->assertJson(['error' => __('exceptions.not_found.author')], true)
+            ->assertJsonIsObject()
+            ->assertJsonStructure(['error']);
     }
 }

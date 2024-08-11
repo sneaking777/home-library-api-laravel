@@ -6,21 +6,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Модель таблицы 'books'
+ * Модель таблицы 'authors'
  *
- * @property string $title
- * @property int $author_id
- * @package App\Models
+ *
  * @extends Model
+ * @package App\Models
  * @author Alexander Mityukhin <almittt@mail.ru>
- * @date 09.08.2024 16:36
+ * @date 11.08.2024 18:27
+ * @method static findOrFail(int $author_id)
  */
-class Book extends Model
+class Author extends Model
 {
     use HasFactory;
 
     /**
      * @var string наименование таблицы
      */
-    protected $table = 'books';
+    protected $table = 'authors';
+
 }

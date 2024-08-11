@@ -1,6 +1,8 @@
 <?php
 
+use App\Authors\Actions\CreateAuthorAction;
 use App\Books\Actions\CreateBookAction;
+use App\Books\Actions\UpdateBookAction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -11,6 +13,11 @@ Route::get('/', function (Request $request) {
 
 Route::middleware('api')->prefix('v1')->group(function () {
     Route::prefix('book')->group(function () {
-        Route::post('/create', CreateBookAction::class);
+        Route::post('/', CreateBookAction::class)->name('book.store');
+       // Route::put('/{id}', UpdateBookAction::class);
+    });
+
+    Route::prefix('author')->group(function () {
+        Route::post('/create', CreateAuthorAction::class);
     });
 });

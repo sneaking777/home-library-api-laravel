@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('authors', function (Blueprint $table) {
             $table->id()->comment('Идентификатор');
-            $table->string('name', 100)->comment('Имя автора');
             $table->string('surname', 100)->comment('Фамилия автора');
+            $table->string('name', 100)->comment('Имя автора');
             $table->string('patronymic', 100)->nullable()->comment('Отчество автора');
             $table->timestamps();
             $table->comment('Таблица хранит в себе информацию о авторах книг');
