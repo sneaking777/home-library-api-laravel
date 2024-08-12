@@ -3,10 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Author;
-use Faker\Factory;
-use Symfony\Component\HttpFoundation\Response;
-use Tests\TestCase;
-use Tests\Traits\AssertDateFormat;
+use Illuminate\Testing\TestResponse;
+use Tests\BaseFeatureTest;
 
 /**
  * Класс BookCreationTest
@@ -17,40 +15,38 @@ use Tests\Traits\AssertDateFormat;
  * ограничения длины для названия книги и другие бизнес-правила.
  *
  * @package Tests\Feature
- * @extends TestCase
+ * @extends BaseFeatureTest
  * @author Alexander Mityukhin <almittt@mail.ru>
  * @date 10.08.2024 15:16
  */
-class BookCreationTest extends TestCase
+class BookCreationTest extends BaseFeatureTest
 {
-    use AssertDateFormat;
 
     /**
-     * @var array начальные данные для книги
-     */
-    private array $bookData;
-
-    /**
-     * Наименование маршрута
+     * Структура JSON в ответе
      *
-     * @var string
+     * @var array
      */
-    private string $route;
+    private array $responseJsonStructure;
 
     /**
      * Настраивает тестовую среду перед каждым тестом.
-     * Устанавливает начальные данные для книги ($this->bookData).
+     * Устанавливает начальные данные для книги ($this->data).
      *
      * @return void
      */
     protected function setUp(): void
     {
         parent::setUp();
+        $this->setResponseJsonStructure([
+            'title',
+            'updated_at',
+            'created_at',
+            'id'
+        ]);
         $this->route = route('book.store');
-        $faker = Factory::create();
-        $this->bookData = [
-            'title' => $faker->sentence(3),
-            'author_id' => $faker->numberBetween(),
+        $this->data = [
+            'title' => $this->faker->sentence(3),
         ];
     }
 
@@ -63,33 +59,10 @@ class BookCreationTest extends TestCase
     public function test_book_creation(): void
     {
         $author = Author::factory()->create();
-        $this->bookData['author_id'] = $author->id;
+        $this->data['author_id'] = $author->id;
 
-        $response = $this->post(
-            $this->route,
-            $this->bookData,
-            ['Accept' => 'application/json']);
-        $response
-            ->assertStatus(Response::HTTP_CREATED)
-            ->assertJson(['title' => $this->bookData['title']], true)
-            ->assertJsonIsObject()
-            ->assertJsonStructure([
-                'title',
-                'updated_at',
-                'created_at',
-                'id'
-            ]);
-        $responseArray = json_decode($response->getContent(), true);
-        $this->assertIsString($responseArray['title']);
-        $this->assertIsString($responseArray['updated_at']);
-        $this->assertDateFormat($responseArray['created_at'], 'Y-m-d\TH:i:s.u\Z');
-        $this->assertDateFormat($responseArray['updated_at'], 'Y-m-d\TH:i:s.u\Z');
-        $this->assertIsString($responseArray['created_at']);
-        $this->assertIsNumeric($responseArray['id']);
-        $this->assertDatabaseHas('books', [
-            'title' => $this->bookData['title'],
-            'author_id' => $this->bookData['author_id']
-        ]);
+        $response = parent::makePostJsonRequest();
+        $this->assertBookFields($response);
     }
 
     /**
@@ -99,15 +72,10 @@ class BookCreationTest extends TestCase
      */
     public function test_book_creation_with_empty_title(): void
     {
-        $this->bookData['title'] = '';
+        $this->data['title'] = '';
 
-        $response = $this->post(
-            $this->route,
-            $this->bookData,
-            ['Accept' => 'application/json']
-        );
-
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $response = parent::makePostJsonRequest();
+        $response = parent::assertResponseStatusAsUnprocessableEntity($response);
         $response->assertJsonValidationErrors(['title']);
     }
 
@@ -118,15 +86,11 @@ class BookCreationTest extends TestCase
      */
     public function test_book_creation_with_title_exceeding_max_length(): void
     {
-        $this->bookData['title'] = str_repeat('Sample Book Title ', 15);
+        $this->data['title'] = str_repeat('Sample Book Title ', 15);
 
-        $response = $this->post(
-            $this->route,
-            $this->bookData,
-            ['Accept' => 'application/json']
-        );
+        $response = parent::makePostJsonRequest();
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $response = parent::assertResponseStatusAsUnprocessableEntity($response);
         $response->assertJsonValidationErrors(['title']);
     }
 
@@ -138,18 +102,49 @@ class BookCreationTest extends TestCase
     public function test_book_creation_with_invalid_author_id(): void
     {
         $maxAuthorId = Author::query()->max('id');
-        $invalidAuthorId = $maxAuthorId + 1;
-        $this->bookData['author_id'] = $invalidAuthorId;
-        $response = $this->post(
-            $this->route,
-            $this->bookData,
-            ['Accept' => 'application/json']
-        );
+        $this->data['author_id'] = $maxAuthorId + 1;
+        $response = parent::makePostJsonRequest();
+        $response = parent::assertResponseStatusAsNotFound($response);
 
         $response
-            ->assertStatus(Response::HTTP_NOT_FOUND)
             ->assertJson(['error' => __('exceptions.not_found.author')], true)
             ->assertJsonIsObject()
             ->assertJsonStructure(['error']);
+    }
+
+    /**
+     * Выполняет проверку полей в ответе после создания книги.
+     *
+     * @param TestResponse $response
+     * @return void
+     */
+    private function assertBookFields(TestResponse $response): void
+    {
+        $response = parent::assertResponseStatusAsCreated($response)
+            ->assertJsonIsObject()
+            ->assertJsonStructure($this->responseJsonStructure)
+            ->assertJson(['title' => $this->data['title']], true);
+        $responseArray = json_decode($response->getContent(), true);
+        $this->assertIsString($responseArray['title']);
+        $this->assertIsString($responseArray['updated_at']);
+        $this->assertDateFormat($responseArray['created_at'], 'Y-m-d\TH:i:s.u\Z');
+        $this->assertDateFormat($responseArray['updated_at'], 'Y-m-d\TH:i:s.u\Z');
+        $this->assertIsString($responseArray['created_at']);
+        $this->assertIsNumeric($responseArray['id']);
+        $this->assertDatabaseHas('books', [
+            'title' => $this->data['title'],
+            'author_id' => $this->data['author_id']
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @param array $structure
+     * @return void
+     */
+    protected function setResponseJsonStructure(array $structure): void
+    {
+        $this->responseJsonStructure = $structure;
     }
 }
