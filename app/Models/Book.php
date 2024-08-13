@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Модель таблицы 'books'
@@ -23,4 +24,15 @@ class Book extends Model
      * @var string наименование таблицы
      */
     protected $table = 'books';
+
+    /**
+     * Даний метод определяет "обратную" связь (inverse relation) от модели Book
+     * к модели Author в контексте связи "один ко многим" (one-to-many)
+     *
+     * @return BelongsTo
+     */
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(Author::class);
+    }
 }

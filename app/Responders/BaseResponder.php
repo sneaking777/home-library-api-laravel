@@ -17,10 +17,10 @@ class BaseResponder
      * Создает JsonResponse с предоставленными данными и статусом HTTP.
      *
      * @param array $data
-     * @param $status
+     * @param int $status
      * @return JsonResponse
      */
-    public function respond(array $data, $status): JsonResponse
+    public function respond(array $data, int $status): JsonResponse
     {
         return response()->json($data, $status);
     }

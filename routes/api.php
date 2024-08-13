@@ -2,6 +2,7 @@
 
 use App\Authors\Actions\CreateAuthorAction;
 use App\Books\Actions\CreateBookAction;
+use App\Books\Actions\ShowBookDetailAction;
 use App\Books\Actions\UpdateBookAction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -14,10 +15,10 @@ Route::get('/', function (Request $request) {
 Route::middleware('api')->prefix('v1')->group(function () {
     Route::prefix('book')->group(function () {
         Route::post('/', CreateBookAction::class)->name('book.store');
-       // Route::put('/{id}', UpdateBookAction::class);
+        Route::get('/{book}', ShowBookDetailAction::class)->name('book.show');
     });
 
     Route::prefix('author')->group(function () {
-        Route::post('/create', CreateAuthorAction::class);
+        Route::post('/', CreateAuthorAction::class);
     });
 });

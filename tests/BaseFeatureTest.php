@@ -81,6 +81,17 @@ abstract class BaseFeatureTest extends TestCase
     }
 
     /**
+     * Выполняет JSON GET-запрос к заданному маршруту с заданными данными и заголовками.
+     *
+     * @return TestResponse
+     */
+    protected function makeGetJsonRequest(): TestResponse
+    {
+        return $this->getJson($this->route, $this->headers);
+    }
+
+
+    /**
      * Метод проверяет, что статус ответа соответствует "Created" (HTTP 201)
      *
      * @param TestResponse $response
@@ -114,5 +125,16 @@ abstract class BaseFeatureTest extends TestCase
 
     }
 
+    /**
+     * Метод проверяет, что статус ответа соответствует "OK" (HTTP 200)
+     *
+     * @param TestResponse $response
+     * @return TestResponse
+     */
+    protected function assertResponseStatusAsOk(TestResponse $response): TestResponse
+    {
+        return $response->assertStatus(Response::HTTP_OK);
+
+    }
 
 }
