@@ -35,4 +35,14 @@ class Book extends Model
     {
         return $this->belongsTo(Author::class);
     }
+
+    /**
+     * @inheritdoc
+     *
+     * @var string[]
+     */
+    protected $fillable = [
+        'title',
+        'author_id'
+    ];
 }

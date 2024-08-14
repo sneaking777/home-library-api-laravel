@@ -5,7 +5,7 @@ namespace App\Books\Requests;
 use App\Http\Requests\DefaultRequest;
 
 /**
- * Класс CreateBookRequest отвечает за валидацию и обработку
+ * Класс BookRequest отвечает за валидацию и обработку
  * входящих данных при создании новой записи книги.
  *
  * @property string $title
@@ -15,7 +15,7 @@ use App\Http\Requests\DefaultRequest;
  * @author Alexander Mityukhin <almittt@mail.ru>
  * @date 11.08.2024 18:06
  */
-class CreateBookRequest extends DefaultRequest
+class BookRequest extends DefaultRequest
 {
     /**
      * Правила валидации

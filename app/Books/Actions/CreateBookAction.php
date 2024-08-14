@@ -2,7 +2,7 @@
 
 namespace App\Books\Actions;
 
-use App\Books\Requests\CreateBookRequest;
+use App\Books\Requests\BookRequest;
 use App\Models\Author;
 use App\Models\Book;
 use App\Responders\BaseResponder;
@@ -38,10 +38,10 @@ readonly class CreateBookAction
     /**
      * Призыватель
      *
-     * @param CreateBookRequest $request
+     * @param BookRequest $request
      * @return JsonResponse
      */
-    public function __invoke(CreateBookRequest $request): JsonResponse
+    public function __invoke(BookRequest $request): JsonResponse
     {
         try {
             Author::findOrFail($request->author_id);

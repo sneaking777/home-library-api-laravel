@@ -36,8 +36,7 @@ class ShowBookDetailTest extends BaseFeatureTest
     private array $responseJsonStructure;
 
     /**
-     * Настраивает тестовую среду перед каждым тестом.
-     * Устанавливает начальные данные для книги ($this->data).
+     * @inheritdoc
      *
      * @return void
      */

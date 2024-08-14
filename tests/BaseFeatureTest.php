@@ -81,6 +81,17 @@ abstract class BaseFeatureTest extends TestCase
     }
 
     /**
+     * Выполняет JSON PUT-запрос к заданному маршруту с заданными данными и заголовками.
+     *
+     * @return TestResponse
+     */
+    protected function makePutJsonRequest(): TestResponse
+    {
+        return $this->putJson($this->route, $this->data, $this->headers);
+    }
+
+
+    /**
      * Выполняет JSON GET-запрос к заданному маршруту с заданными данными и заголовками.
      *
      * @return TestResponse

@@ -16,6 +16,7 @@ Route::middleware('api')->prefix('v1')->group(function () {
     Route::prefix('book')->group(function () {
         Route::post('/', CreateBookAction::class)->name('book.store');
         Route::get('/{book}', ShowBookDetailAction::class)->name('book.show');
+        Route::put('/{book}', UpdateBookAction::class)->name('book.update');
     });
 
     Route::prefix('author')->group(function () {

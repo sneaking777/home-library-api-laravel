@@ -30,8 +30,7 @@ class BookCreationTest extends BaseFeatureTest
     private array $responseJsonStructure;
 
     /**
-     * Настраивает тестовую среду перед каждым тестом.
-     * Устанавливает начальные данные для книги ($this->data).
+     * @inheritdoc
      *
      * @return void
      */
@@ -127,9 +126,9 @@ class BookCreationTest extends BaseFeatureTest
         $responseArray = json_decode($response->getContent(), true);
         $this->assertIsString($responseArray['title']);
         $this->assertIsString($responseArray['updated_at']);
+        $this->assertIsString($responseArray['created_at']);
         $this->assertDateFormat($responseArray['created_at'], 'Y-m-d\TH:i:s.u\Z');
         $this->assertDateFormat($responseArray['updated_at'], 'Y-m-d\TH:i:s.u\Z');
-        $this->assertIsString($responseArray['created_at']);
         $this->assertIsNumeric($responseArray['id']);
         $this->assertDatabaseHas('books', [
             'title' => $this->data['title'],
