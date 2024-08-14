@@ -126,6 +126,6 @@ class ShowBookDetailTest extends BaseFeatureTest
         $response = parent::makeGetJsonRequest();
         $response = parent::assertResponseStatusAsNotFound($response);
         $response->assertJsonStructure(['message']);
-        $response->assertJsonPath('message', 'Запрашиваемая книга не найдена.');
+        $response->assertJsonPath('message', __('exceptions.not_found.book'));
     }
 }

@@ -101,6 +101,16 @@ abstract class BaseFeatureTest extends TestCase
         return $this->getJson($this->route, $this->headers);
     }
 
+    /**
+     * Выполняет JSON DELETE-запрос к заданному маршруту с заданными данными и заголовками.
+     *
+     * @return TestResponse
+     */
+    protected function makeDeleteJsonRequest(): TestResponse
+    {
+        return $this->deleteJson($this->route, $this->headers);
+    }
+
 
     /**
      * Метод проверяет, что статус ответа соответствует "Created" (HTTP 201)
@@ -148,4 +158,14 @@ abstract class BaseFeatureTest extends TestCase
 
     }
 
+    /**
+     * Метод проверяет, что статус ответа соответствует "OK" (HTTP 204)
+     *
+     * @param TestResponse $response
+     * @return TestResponse
+     */
+    public function assertResponseStatusAsNoContent(TestResponse $response): TestResponse
+    {
+        return $response->assertStatus(Response::HTTP_NO_CONTENT);
+    }
 }

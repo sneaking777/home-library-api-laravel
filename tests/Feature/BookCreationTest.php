@@ -57,8 +57,15 @@ class BookCreationTest extends BaseFeatureTest
      */
     public function test_book_creation(): void
     {
-        $author = Author::factory()->create();
-        $this->data['author_id'] = $author->id;
+        $authorsIds = Author::query()->pluck('id');
+
+        if ($authorsIds->isEmpty()) {
+            $author = Author::factory()->create();
+            $this->data['author_id'] = $author->id;
+        } else {
+            $authorId = $authorsIds->random();
+            $this->data['author_id'] = $authorId;
+        }
 
         $response = parent::makePostJsonRequest();
         $this->assertBookFields($response);

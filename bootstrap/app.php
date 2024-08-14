@@ -19,7 +19,11 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
-            if ($request->routeIs('book.show')) {
+            if (
+                $request->routeIs('book.show')
+                || $request->routeIs('book.update')
+                || $request->routeIs('book.destroy')
+            ) {
 
                 return response()->json([
                     'message' => 'Запрашиваемая книга не найдена.'

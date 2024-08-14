@@ -5,7 +5,6 @@ namespace Tests\Feature;
 
 use App\Models\Author;
 use App\Models\Book;
-use Illuminate\Support\Arr;
 use Tests\BaseFeatureTest;
 
 /**
@@ -54,8 +53,8 @@ class BookUpdateTest extends BaseFeatureTest
         $this->data = [
             'title' => $this->faker->sentence(3),
         ];
-        $bookIds = Book::query()->pluck('id')->toArray();
-        $randomBookId = Arr::random($bookIds);
+        $bookIds = Book::query()->pluck('id');
+        $randomBookId = $bookIds->random();
         $this->route = route('book.update', ['book' => $randomBookId]);
     }
 
@@ -144,6 +143,23 @@ class BookUpdateTest extends BaseFeatureTest
             ->assertJsonIsObject()
             ->assertJsonStructure(['error']);
     }
+
+    /**
+     * Сценария, когда при обновлении книги передается несуществующий ID книги
+     *
+     * @return void
+     */
+    public function test_book_not_found(): void
+    {
+        $maxBookId = Book::query()->max('id');
+        $invalidBookId = $maxBookId + 1;
+        $this->route = route('book.update', ['book' => $invalidBookId]);
+        $response = parent::makePutJsonRequest();
+        $response = parent::assertResponseStatusAsNotFound($response);
+        $response->assertJsonStructure(['message']);
+        $response->assertJsonPath('message', __('exceptions.not_found.book'));
+    }
+
 
     /**
      * @inheritdoc
