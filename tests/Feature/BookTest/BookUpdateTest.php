@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace BookTest;
 
 
 use App\Models\Author;
@@ -89,7 +89,7 @@ class BookUpdateTest extends BaseFeatureTest
         } else {
             $this->assertNull($patronymic);
         }
-        $response->assertJsonPath('message', 'Книга успешно обновлена');
+        $response->assertJsonPath('message', 'Книга успешно обновлена.');
         $response->assertJsonPath('book.id', $bookId);
         $response->assertJsonPath('book.title', $this->data['title']);
         $response->assertJsonPath('book.author.id', $this->data['author_id']);

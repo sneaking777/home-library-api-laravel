@@ -1,0 +1,156 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Системы Управления Домашней Библиотекой",
+        "version": "0.1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/api/v1/",
+            "description": "Локальный сервер."
+        }
+    ],
+    "paths": {
+        "/book/{book}": {
+            "get": {
+                "tags": [
+                    "book"
+                ],
+                "summary": "Введите идентификатор книги",
+                "description": "Запрос на вывод детальной информации о конкретной книге.",
+                "operationId": "a7fd9a8270fcbf3f328d0a7522f75d40",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/book"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "description": "Данные о книге",
+                                            "properties": {
+                                                "id": {
+                                                    "description": "ID книги",
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "description": "Название книги",
+                                                    "type": "string"
+                                                },
+                                                "author": {
+                                                    "description": "Автор книги.",
+                                                    "properties": {
+                                                        "id": {
+                                                            "description": "ID автора",
+                                                            "type": "integer"
+                                                        },
+                                                        "surname": {
+                                                            "description": "Фамилия автора",
+                                                            "type": "string"
+                                                        },
+                                                        "name": {
+                                                            "description": "Имя автора",
+                                                            "type": "string"
+                                                        },
+                                                        "patronymic": {
+                                                            "description": "Отчество автора",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 1,
+                                        "title": "Как войти в IT.",
+                                        "author": {
+                                            "id": 1,
+                                            "surname": "Иванов",
+                                            "name": "Иван",
+                                            "patronymic": "Иванович"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/book_not_found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "book"
+                ],
+                "summary": "Введите идентификатор книги",
+                "description": "Запрос на удаление конкретной книги.",
+                "operationId": "5b2b123542f2cdd60641d79c4ed4369e",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/book"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/book_not_found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "responses": {
+            "book_not_found": {
+                "description": "Книга не найдена.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "description": "Сообщение",
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "example": {
+                            "message": "Запрашиваемая книга не найдена."
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "book": {
+                "name": "book",
+                "in": "path",
+                "description": "Идентификатор книги",
+                "required": true,
+                "schema": {
+                    "type": "integer"
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "book",
+            "description": "Все эндпоинты API, относящиеся к книгам"
+        }
+    ]
+}

@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
+
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
             if (
                 $request->routeIs('book.show')
@@ -29,7 +30,6 @@ return Application::configure(basePath: dirname(__DIR__))
                     'message' => 'Запрашиваемая книга не найдена.'
                 ], Response::HTTP_NOT_FOUND);
             }
-
             return response()->json([
                 'message' => 'Запрашиваемый ресурс не найден.'
             ], Response::HTTP_NOT_FOUND);

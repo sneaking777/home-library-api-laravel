@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace BookTest;
 
 use App\Models\Author;
 use Illuminate\Testing\TestResponse;
@@ -38,10 +38,17 @@ class BookCreationTest extends BaseFeatureTest
     {
         parent::setUp();
         $this->setResponseJsonStructure([
-            'title',
-            'updated_at',
-            'created_at',
-            'id'
+            'message',
+            'book' => [
+                'id',
+                'title',
+                'author' => [
+                    'id',
+                    'surname',
+                    'name',
+                    'patronymic'
+                ]
+            ]
         ]);
         $this->route = route('book.store');
         $this->data = [
@@ -126,17 +133,23 @@ class BookCreationTest extends BaseFeatureTest
      */
     private function assertBookFields(TestResponse $response): void
     {
+        $response = parent::assertResponseStatusAsCreated($response);
         $response = parent::assertResponseStatusAsCreated($response)
             ->assertJsonIsObject()
             ->assertJsonStructure($this->responseJsonStructure)
-            ->assertJson(['title' => $this->data['title']], true);
+            ->assertJsonPath('message', 'Книга успешно создана.')
+            ->assertJsonPath('book.title', $this->data['title'])
+            ->assertJsonPath('book.author.id', $this->data['author_id']);
         $responseArray = json_decode($response->getContent(), true);
-        $this->assertIsString($responseArray['title']);
-        $this->assertIsString($responseArray['updated_at']);
-        $this->assertIsString($responseArray['created_at']);
-        $this->assertDateFormat($responseArray['created_at'], 'Y-m-d\TH:i:s.u\Z');
-        $this->assertDateFormat($responseArray['updated_at'], 'Y-m-d\TH:i:s.u\Z');
-        $this->assertIsNumeric($responseArray['id']);
+        $this->assertIsString($responseArray['message']);
+        $this->assertIsArray($responseArray['book']);
+        $this->assertIsNumeric($responseArray['book']['id']);
+        $this->assertIsString($responseArray['book']['title']);
+        $this->assertIsArray($responseArray['book']['author']);
+        $this->assertIsNumeric($responseArray['book']['author']['id']);
+        $this->assertIsString($responseArray['book']['author']['surname']);
+        $this->assertIsString($responseArray['book']['author']['name']);
+        $this->assertIsString($responseArray['book']['author']['patronymic']);
         $this->assertDatabaseHas('books', [
             'title' => $this->data['title'],
             'author_id' => $this->data['author_id']

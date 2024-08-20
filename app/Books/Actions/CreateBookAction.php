@@ -3,6 +3,7 @@
 namespace App\Books\Actions;
 
 use App\Books\Requests\BookRequest;
+use App\Http\Resources\BookResource;
 use App\Models\Author;
 use App\Models\Book;
 use App\Responders\BaseResponder;
@@ -49,7 +50,11 @@ readonly class CreateBookAction
             $book->title = $request->title;
             $book->author_id = $request->author_id;
             $book->save();
-            $result['data'] = $book->toArray();
+            $result['data'] = [
+                'message' => 'Книга успешно создана.',
+                'book' => new BookResource($book->load('author')),
+
+            ];
             $result['status'] = Response::HTTP_CREATED;
 
             return $this->responder->respond($result['data'], $result['status']);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace BookTest;
 
 use App\Models\Book;
 use Symfony\Component\HttpFoundation\Response;
