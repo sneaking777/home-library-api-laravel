@@ -3,11 +3,10 @@
 namespace App\Swagger;
 
 use OpenApi\Attributes as OA;
-use Symfony\Component\HttpFoundation\Response;
 
-#[OA\Info(version: "0.1.0", title: "API Системы Управления Домашней Библиотекой")]
+#[OA\Info(version: "0.1.2", title: "API Системы Управления Домашней Библиотекой")]
 #[OA\Server(
-    url: 'http://localhost/api/v1/',
+    url: 'http://localhost/api/v1',
     description: 'Локальный сервер.',
 )]
 #[OA\Tag(
@@ -35,6 +34,7 @@ use Symfony\Component\HttpFoundation\Response;
                         'message' => 'Запрашиваемая книга не найдена.'
                     ]
                 )
+
             ]
         )
     ],
@@ -49,8 +49,6 @@ use Symfony\Component\HttpFoundation\Response;
             )
         )
     ]
-
-
 )]
 class HomeLibraryApiDocumentation
 {

@@ -1,16 +1,150 @@
 {
-    "openapi": "3.0.0",
+    "openapi": "3.1.0",
     "info": {
         "title": "API Системы Управления Домашней Библиотекой",
-        "version": "0.1.0"
+        "version": "0.1.1"
     },
     "servers": [
         {
-            "url": "http://localhost/api/v1/",
+            "url": "http://localhost/api/v1",
             "description": "Локальный сервер."
         }
     ],
     "paths": {
+        "/book": {
+            "post": {
+                "tags": [
+                    "book"
+                ],
+                "description": "Запрос на создание книги.",
+                "operationId": "f8e5277f29dea63d344f5b9b4a84403a",
+                "requestBody": {
+                    "description": "JSON объект для создания новой книги",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "description": "Тело запроса.",
+                                "required": [
+                                    "title",
+                                    "author_id"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "Название книги",
+                                        "type": "string"
+                                    },
+                                    "author_id": {
+                                        "description": "ID автора книги.",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "maxLength": 150
+                            },
+                            "example": {
+                                "title": "Кулинарные рецепты",
+                                "author_id": 81
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Сообщение об успешном создании книги.",
+                                            "type": "string"
+                                        },
+                                        "book": {
+                                            "description": "Информация о книге.",
+                                            "properties": {
+                                                "id": {
+                                                    "description": "ID книги.",
+                                                    "type": "integer"
+                                                },
+                                                "author": {
+                                                    "description": "Информация о авторе книги.",
+                                                    "properties": {
+                                                        "id": {
+                                                            "description": "ID автора.",
+                                                            "type": "integer"
+                                                        },
+                                                        "surname": {
+                                                            "description": "Фамилия автора",
+                                                            "type": "string"
+                                                        },
+                                                        "name": {
+                                                            "description": "Имя автора",
+                                                            "type": "string"
+                                                        },
+                                                        "patronymic": {
+                                                            "description": "Отчество автора",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Книга успешно создана.",
+                                    "book": {
+                                        "id": 1,
+                                        "title": "Как войти в IT.",
+                                        "author": {
+                                            "id": 1,
+                                            "surname": "Иванов",
+                                            "name": "Иван",
+                                            "patronymic": "Иванович"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Сообщение об ошибках.",
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "description": "Перечисление ощибок валидации",
+                                            "properties": {},
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "The title field is required. (and 1 more error)",
+                                    "errors": {
+                                        "title": [
+                                            "The title field is required."
+                                        ],
+                                        "author_id": [
+                                            "The author_id field is required."
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/book/{book}": {
             "get": {
                 "tags": [
