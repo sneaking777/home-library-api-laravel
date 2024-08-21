@@ -4,7 +4,7 @@ namespace App\Swagger;
 
 use OpenApi\Attributes as OA;
 
-#[OA\Info(version: "0.1.2", title: "API Системы Управления Домашней Библиотекой")]
+#[OA\Info(version: "0.1.3", title: "API Системы Управления Домашней Библиотекой")]
 #[OA\Server(
     url: 'http://localhost/api/v1',
     description: 'Локальный сервер.',
@@ -15,9 +15,9 @@ use OpenApi\Attributes as OA;
 )]
 #[OA\Components(
     responses: [
-        'book_not_found' => new OA\Response(
-            response: 'book_not_found',
-            description: 'Книга не найдена.',
+        'not_found' => new OA\Response(
+            response: 'not_found',
+            description: 'Not Found',
             content: [
                 "application/json" => new OA\MediaType(
                     mediaType: "application/json",
@@ -27,16 +27,55 @@ use OpenApi\Attributes as OA;
                                 property: 'message',
                                 description: 'Сообщение',
                                 type: 'string',
-                            )
+                            ),
                         ]
                     ),
                     example: [
-                        'message' => 'Запрашиваемая книга не найдена.'
-                    ]
+                        "message" => 'Запрашиваемый ресурс не найден',
+                    ],
                 )
-
             ]
+        ),
+        'book_validation_errors' => new OA\Response(
+            response: 'book_validation_errors',
+            description: 'Unprocessable Content',
+            content: [
+                'application/json' => new OA\MediaType(
+                    mediaType: "application/json",
+                    schema: new OA\Schema(
+                        properties: [
+                            'message' => new OA\Property(
+                                property: 'message',
+                                description: 'Сообщение об ошибках.',
+                                type: 'string',
+                            ),
+                            'errors' => new OA\Property(
+                                property: 'errors',
+                                description: 'Перечисление ощибок валидации',
+                                properties: [
+
+                                ],
+                                type: 'object'
+                            ),
+                        ],
+                        type: 'object'
+                    ),
+                    example: [
+                        'message' => "The title field is required. (and 1 more error)",
+                        'errors' => [
+                            'title' => [
+                                "The title field is required."
+                            ],
+                            "author_id" => [
+                                "The author_id field is required."
+                            ],
+                        ]
+                    ]
+                ),
+            ],
+
         )
+
     ],
     parameters: [
         'book' => new OA\Parameter(

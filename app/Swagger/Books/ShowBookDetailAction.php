@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
     OA\Get(
         path: '/book/{book}',
         description: 'Запрос на вывод детальной информации о конкретной книге.',
-        summary: 'Введите идентификатор книги',
+        summary: 'Информация о книге',
         tags: ['book'],
         parameters: [
             new OA\Parameter(
@@ -87,7 +87,7 @@ use Symfony\Component\HttpFoundation\Response;
                     ),
                 ]),
             new OA\Response(
-                ref: "#/components/responses/book_not_found",
+                ref: "#/components/responses/not_found",
                 response: Response::HTTP_NOT_FOUND,
             )
         ]

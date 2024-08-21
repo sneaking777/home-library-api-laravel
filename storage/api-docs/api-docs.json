@@ -2,7 +2,7 @@
     "openapi": "3.1.0",
     "info": {
         "title": "API Системы Управления Домашней Библиотекой",
-        "version": "0.1.1"
+        "version": "0.1.2"
     },
     "servers": [
         {
@@ -16,6 +16,7 @@
                 "tags": [
                     "book"
                 ],
+                "summary": "Создание новой книги",
                 "description": "Запрос на создание книги.",
                 "operationId": "f8e5277f29dea63d344f5b9b4a84403a",
                 "requestBody": {
@@ -42,8 +43,8 @@
                                 "maxLength": 150
                             },
                             "example": {
-                                "title": "Кулинарные рецепты",
-                                "author_id": 81
+                                "title": "Как войти в IT.",
+                                "author_id": 1
                             }
                         }
                     }
@@ -110,37 +111,11 @@
                             }
                         }
                     },
+                    "404": {
+                        "$ref": "#/components/responses/not_found"
+                    },
                     "422": {
-                        "description": "Unprocessable Content",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "description": "Сообщение об ошибках.",
-                                            "type": "string"
-                                        },
-                                        "errors": {
-                                            "description": "Перечисление ощибок валидации",
-                                            "properties": {},
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                },
-                                "example": {
-                                    "message": "The title field is required. (and 1 more error)",
-                                    "errors": {
-                                        "title": [
-                                            "The title field is required."
-                                        ],
-                                        "author_id": [
-                                            "The author_id field is required."
-                                        ]
-                                    }
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/book_validation_errors"
                     }
                 }
             }
@@ -150,7 +125,7 @@
                 "tags": [
                     "book"
                 ],
-                "summary": "Введите идентификатор книги",
+                "summary": "Информация о книге",
                 "description": "Запрос на вывод детальной информации о конкретной книге.",
                 "operationId": "a7fd9a8270fcbf3f328d0a7522f75d40",
                 "parameters": [
@@ -220,7 +195,119 @@
                         }
                     },
                     "404": {
-                        "$ref": "#/components/responses/book_not_found"
+                        "$ref": "#/components/responses/not_found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "book"
+                ],
+                "summary": "Обновление книги",
+                "description": "Запрос на обновление информации о конкретной книге.",
+                "operationId": "7c92b1861a593a393fd4cba9ff826cb9",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/book"
+                    }
+                ],
+                "requestBody": {
+                    "description": "JSON объект для создания новой книги",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "description": "Тело запроса.",
+                                "required": [
+                                    "title",
+                                    "author_id"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "Название книги",
+                                        "type": "string"
+                                    },
+                                    "author_id": {
+                                        "description": "ID автора книги.",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "maxLength": 150
+                            },
+                            "example": {
+                                "title": "Как выйти из IT.",
+                                "author_id": 2
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Сообщение об успешном создании книги.",
+                                            "type": "string"
+                                        },
+                                        "book": {
+                                            "description": "Информация о книге.",
+                                            "properties": {
+                                                "id": {
+                                                    "description": "ID книги.",
+                                                    "type": "integer"
+                                                },
+                                                "author": {
+                                                    "description": "Информация о авторе книги.",
+                                                    "properties": {
+                                                        "id": {
+                                                            "description": "ID автора.",
+                                                            "type": "integer"
+                                                        },
+                                                        "surname": {
+                                                            "description": "Фамилия автора",
+                                                            "type": "string"
+                                                        },
+                                                        "name": {
+                                                            "description": "Имя автора",
+                                                            "type": "string"
+                                                        },
+                                                        "patronymic": {
+                                                            "description": "Отчество автора",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Книга успешно обновлена.",
+                                    "book": {
+                                        "id": 1,
+                                        "title": "Как выйти из IT.",
+                                        "author": {
+                                            "id": 2,
+                                            "surname": "Пупкин",
+                                            "name": "Василий",
+                                            "patronymic": "Васильевич"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not_found"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/book_validation_errors"
                     }
                 }
             },
@@ -228,7 +315,7 @@
                 "tags": [
                     "book"
                 ],
-                "summary": "Введите идентификатор книги",
+                "summary": "Удаление книги",
                 "description": "Запрос на удаление конкретной книги.",
                 "operationId": "5b2b123542f2cdd60641d79c4ed4369e",
                 "parameters": [
@@ -241,7 +328,7 @@
                         "description": "No Content"
                     },
                     "404": {
-                        "$ref": "#/components/responses/book_not_found"
+                        "$ref": "#/components/responses/not_found"
                     }
                 }
             }
@@ -249,8 +336,8 @@
     },
     "components": {
         "responses": {
-            "book_not_found": {
-                "description": "Книга не найдена.",
+            "not_found": {
+                "description": "Not Found",
                 "content": {
                     "application/json": {
                         "schema": {
@@ -263,7 +350,39 @@
                             "type": "object"
                         },
                         "example": {
-                            "message": "Запрашиваемая книга не найдена."
+                            "message": "Запрашиваемый ресурс не найден"
+                        }
+                    }
+                }
+            },
+            "book_validation_errors": {
+                "description": "Unprocessable Content",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "description": "Сообщение об ошибках.",
+                                    "type": "string"
+                                },
+                                "errors": {
+                                    "description": "Перечисление ощибок валидации",
+                                    "properties": {},
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "example": {
+                            "message": "The title field is required. (and 1 more error)",
+                            "errors": {
+                                "title": [
+                                    "The title field is required."
+                                ],
+                                "author_id": [
+                                    "The author_id field is required."
+                                ]
+                            }
                         }
                     }
                 }

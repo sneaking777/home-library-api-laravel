@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
     OA\Delete(
         path: '/book/{book}',
         description: 'Запрос на удаление конкретной книги.',
-        summary: 'Введите идентификатор книги',
+        summary: 'Удаление книги',
         tags: ['book'],
         parameters: [
             new OA\Parameter(
@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
                 description: 'No Content'
             ),
             new OA\Response(
-                ref: "#/components/responses/book_not_found",
+                ref: "#/components/responses/not_found",
                 response: Response::HTTP_NOT_FOUND,
             )
         ]

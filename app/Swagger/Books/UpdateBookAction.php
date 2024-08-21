@@ -6,10 +6,10 @@ use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Response;
 
 #[
-    OA\Post(
-        path: '/book',
-        description: 'Запрос на создание книги.',
-        summary: 'Создание новой книги',
+    OA\Put(
+        path: '/book/{book}',
+        description: 'Запрос на обновление информации о конкретной книге.',
+        summary: 'Обновление книги',
         requestBody: new OA\RequestBody(
             description: 'JSON объект для создания новой книги',
             content: [
@@ -34,17 +34,22 @@ use Symfony\Component\HttpFoundation\Response;
                         maxLength: 150
                     ),
                     example: [
-                        "title" => "Как войти в IT.",
-                        "author_id" => 1
+                        "title" => "Как выйти из IT.",
+                        "author_id" => 2
                     ]
                 )
             ]
         ),
         tags: ['book'],
+        parameters: [
+            new OA\Parameter(
+                ref: "#/components/parameters/book",
+            )
+        ],
         responses: [
             new OA\Response(
-                response: Response::HTTP_CREATED,
-                description: 'Created',
+                response: Response::HTTP_OK,
+                description: 'OK',
                 content: [
                     "application/json" => new OA\MediaType(
                         mediaType: "application/json",
@@ -97,15 +102,15 @@ use Symfony\Component\HttpFoundation\Response;
                             ]
                         ),
                         example: [
-                            'message' => 'Книга успешно создана.',
+                            'message' => 'Книга успешно обновлена.',
                             "book" => [
                                 "id" => 1,
-                                "title" => "Как войти в IT.",
+                                "title" => "Как выйти из IT.",
                                 "author" => [
-                                    "id" => 1,
-                                    "surname" => "Иванов",
-                                    "name" => "Иван",
-                                    "patronymic" => "Иванович",
+                                    "id" => 2,
+                                    "surname" => "Пупкин",
+                                    "name" => "Василий",
+                                    "patronymic" => "Васильевич",
                                 ],
                             ],
                         ]
@@ -123,7 +128,7 @@ use Symfony\Component\HttpFoundation\Response;
         ]
     )
 ]
-class CreateBookAction
+class UpdateBookAction
 {
 
 }
