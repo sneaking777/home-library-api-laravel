@@ -78,6 +78,7 @@ class ShowBookDetailTest extends BaseFeatureTest
      */
     public function test_show_book_detail(): void
     {
+        $this->loginAsUser();
         $bookIds = Book::query()->pluck('id')->toArray();
         $randomBookId = Arr::random($bookIds);
         $this->route = route('book.show', ['book' => $randomBookId]);
@@ -120,6 +121,7 @@ class ShowBookDetailTest extends BaseFeatureTest
      */
     public function test_book_not_found(): void
     {
+        $this->loginAsUser();
         $maxBookId = Book::query()->max('id');
         $invalidBookId = $maxBookId + 1;
         $this->route = route('book.show', ['book' => $invalidBookId]);

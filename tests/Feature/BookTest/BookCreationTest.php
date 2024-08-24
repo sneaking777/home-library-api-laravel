@@ -3,6 +3,8 @@
 namespace BookTest;
 
 use App\Models\Author;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Testing\TestResponse;
 use Tests\BaseFeatureTest;
 
@@ -64,6 +66,7 @@ class BookCreationTest extends BaseFeatureTest
      */
     public function test_book_creation(): void
     {
+        $this->loginAsUser();
         $authorsIds = Author::query()->pluck('id');
 
         if ($authorsIds->isEmpty()) {
@@ -79,12 +82,34 @@ class BookCreationTest extends BaseFeatureTest
     }
 
     /**
+     * Сценарий создания книги без авторизации
+     *
+     * @return void
+     */
+    public function test_book_creation_without_auth(): void
+    {
+        $authorsIds = Author::query()->pluck('id');
+
+        if ($authorsIds->isEmpty()) {
+            $author = Author::factory()->create();
+            $this->data['author_id'] = $author->id;
+        } else {
+            $authorId = $authorsIds->random();
+            $this->data['author_id'] = $authorId;
+        }
+        $response = parent::makePostJsonRequest();
+        $response = parent::assertResponseStatusAsUnauthorized($response);
+        $response->assertJson(['message' => 'Unauthenticated.']);
+    }
+
+    /**
      * Сценарий создания книги с пустым заголовком
      *
      * @return void
      */
     public function test_book_creation_with_empty_title(): void
     {
+        $this->loginAsUser();
         $this->data['title'] = '';
 
         $response = parent::makePostJsonRequest();
@@ -99,6 +124,7 @@ class BookCreationTest extends BaseFeatureTest
      */
     public function test_book_creation_with_title_exceeding_max_length(): void
     {
+        $this->loginAsUser();
         $this->data['title'] = str_repeat('Sample Book Title ', 15);
 
         $response = parent::makePostJsonRequest();
@@ -114,6 +140,7 @@ class BookCreationTest extends BaseFeatureTest
      */
     public function test_book_creation_with_invalid_author_id(): void
     {
+        $this->loginAsUser();
         $maxAuthorId = Author::query()->max('id');
         $this->data['author_id'] = $maxAuthorId + 1;
         $response = parent::makePostJsonRequest();

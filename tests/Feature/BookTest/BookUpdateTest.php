@@ -65,6 +65,7 @@ class BookUpdateTest extends BaseFeatureTest
      */
     public function test_book_update()
     {
+        $this->loginAsUser();
         $urlParts = parse_url($this->route);
         $pathParts = explode('/', $urlParts['path']);
         $bookId = (int)end($pathParts);
@@ -105,6 +106,7 @@ class BookUpdateTest extends BaseFeatureTest
      */
     public function test_book_update_with_empty_title(): void
     {
+        $this->loginAsUser();
         $this->data['title'] = '';
         $response = parent::makePutJsonRequest();
         $response = parent::assertResponseStatusAsUnprocessableEntity($response);
@@ -118,6 +120,7 @@ class BookUpdateTest extends BaseFeatureTest
      */
     public function test_book_update_with_title_exceeding_max_length(): void
     {
+        $this->loginAsUser();
         $this->data['title'] = str_repeat('Sample Book Title ', 15);
 
         $response = parent::makePutJsonRequest();
@@ -133,6 +136,7 @@ class BookUpdateTest extends BaseFeatureTest
      */
     public function test_book_update_with_invalid_author_id(): void
     {
+        $this->loginAsUser();
         $maxAuthorId = Author::query()->max('id');
         $this->data['author_id'] = $maxAuthorId + 1;
         $response = parent::makePutJsonRequest();
@@ -151,6 +155,7 @@ class BookUpdateTest extends BaseFeatureTest
      */
     public function test_book_not_found(): void
     {
+        $this->loginAsUser();
         $maxBookId = Book::query()->max('id');
         $invalidBookId = $maxBookId + 1;
         $this->route = route('book.update', ['book' => $invalidBookId]);

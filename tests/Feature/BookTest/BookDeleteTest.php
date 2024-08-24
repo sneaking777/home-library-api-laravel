@@ -45,6 +45,7 @@ class BookDeleteTest extends BaseFeatureTest
      */
     public function test_book_delete()
     {
+        $this->loginAsUser();
         $urlParts = parse_url($this->route);
         $pathParts = explode('/', $urlParts['path']);
         $bookId = (int)end($pathParts);
@@ -66,6 +67,7 @@ class BookDeleteTest extends BaseFeatureTest
      */
     public function test_book_not_found(): void
     {
+        $this->loginAsUser();
         $maxBookId = Book::query()->max('id');
         $invalidBookId = $maxBookId + 1;
         $this->route = route('book.destroy', ['book' => $invalidBookId]);

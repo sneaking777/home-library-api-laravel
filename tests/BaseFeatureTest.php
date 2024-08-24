@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\User;
 use Faker\Factory;
 use Faker\Generator;
 use Illuminate\Testing\TestResponse;
@@ -147,6 +148,18 @@ abstract class BaseFeatureTest extends TestCase
     }
 
     /**
+     * Метод проверяет, что статус ответа соответствует "Unauthorized" (HTTP 401)
+     *
+     * @param TestResponse $response
+     * @return TestResponse
+     */
+    protected function assertResponseStatusAsUnauthorized(TestResponse $response): TestResponse
+    {
+        return $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+
+    }
+
+    /**
      * Метод проверяет, что статус ответа соответствует "OK" (HTTP 200)
      *
      * @param TestResponse $response
@@ -167,5 +180,17 @@ abstract class BaseFeatureTest extends TestCase
     public function assertResponseStatusAsNoContent(TestResponse $response): TestResponse
     {
         return $response->assertStatus(Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Вход в систему под пользователем.
+     * Метод создает новую учетную запись пользователя с помощью фабрики и устанавливает ее как текущую.
+     *
+     * @return void
+     */
+    protected function loginAsUser(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
     }
 }

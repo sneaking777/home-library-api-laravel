@@ -13,7 +13,7 @@ Route::get('/', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::middleware('api')->prefix('v1')->group(function () {
+Route::middleware(['auth:sanctum', 'api'])->prefix('v1')->group(function () {
     Route::prefix('book')->group(function () {
         Route::post('/', CreateBookAction::class)->name('book.store');
         Route::get('/{book}', ShowBookDetailAction::class)->name('book.show');
