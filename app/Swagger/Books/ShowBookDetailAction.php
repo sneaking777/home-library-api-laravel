@@ -89,6 +89,10 @@ use Symfony\Component\HttpFoundation\Response;
             new OA\Response(
                 ref: "#/components/responses/not_found",
                 response: Response::HTTP_NOT_FOUND,
+            ),
+            new OA\Response(
+                ref: "#/components/responses/unauthenticated",
+                response: Response::HTTP_UNAUTHORIZED,
             )
         ]
 

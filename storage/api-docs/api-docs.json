@@ -2,7 +2,7 @@
     "openapi": "3.1.0",
     "info": {
         "title": "API Системы Управления Домашней Библиотекой",
-        "version": "0.1.2"
+        "version": "0.1.5"
     },
     "servers": [
         {
@@ -116,6 +116,9 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/book_validation_errors"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
                     }
                 }
             }
@@ -196,6 +199,9 @@
                     },
                     "404": {
                         "$ref": "#/components/responses/not_found"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
                     }
                 }
             },
@@ -308,6 +314,9 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/book_validation_errors"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
                     }
                 }
             },
@@ -329,6 +338,9 @@
                     },
                     "404": {
                         "$ref": "#/components/responses/not_found"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
                     }
                 }
             }
@@ -386,6 +398,25 @@
                         }
                     }
                 }
+            },
+            "unauthenticated": {
+                "description": "Unauthorized",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "description": "Сообщение",
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "example": {
+                            "message": "Unauthenticated."
+                        }
+                    }
+                }
             }
         },
         "parameters": {
@@ -398,12 +429,25 @@
                     "type": "integer"
                 }
             }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
         }
     },
     "tags": [
         {
             "name": "book",
             "description": "Все эндпоинты API, относящиеся к книгам"
+        }
+    ],
+    "security": [
+        {
+            "sanctum": []
         }
     ]
 }

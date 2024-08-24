@@ -4,7 +4,7 @@ namespace App\Swagger;
 
 use OpenApi\Attributes as OA;
 
-#[OA\Info(version: "0.1.3", title: "API Системы Управления Домашней Библиотекой")]
+#[OA\Info(version: "0.1.4", title: "API Системы Управления Домашней Библиотекой")]
 #[OA\Server(
     url: 'http://localhost/api/v1',
     description: 'Локальный сервер.',
@@ -75,7 +75,27 @@ use OpenApi\Attributes as OA;
             ],
 
         ),
-        'unauthenticated'
+        'unauthenticated' => new OA\Response(
+            response: 'unauthenticated',
+            description: 'Unauthorized',
+            content: [
+                "application/json" => new OA\MediaType(
+                    mediaType: "application/json",
+                    schema: new OA\Schema(
+                        properties: [
+                            'message' => new OA\Property(
+                                property: 'message',
+                                description: 'Сообщение',
+                                type: 'string',
+                            ),
+                        ]
+                    ),
+                    example: [
+                        "message" => 'Unauthenticated.',
+                    ],
+                )
+            ]
+        )
 
     ],
     parameters: [

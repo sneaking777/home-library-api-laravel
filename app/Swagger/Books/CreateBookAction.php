@@ -119,6 +119,10 @@ use Symfony\Component\HttpFoundation\Response;
             new OA\Response(
                 ref: "#/components/responses/book_validation_errors",
                 response: Response::HTTP_UNPROCESSABLE_ENTITY,
+            ),
+            new OA\Response(
+                ref: "#/components/responses/unauthenticated",
+                response: Response::HTTP_UNAUTHORIZED,
             )
         ]
     )
