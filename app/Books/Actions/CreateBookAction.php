@@ -12,6 +12,8 @@ use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * Класс CreateBookAction
+ *
  * Класс предназначен для создания новой книги в приложении.
  * В частности, он обрабатывает запросы на создание новых книг и сохраняет их в хранилище данных
  *
