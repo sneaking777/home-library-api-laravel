@@ -114,6 +114,16 @@ class ShowBookDetailTest extends BaseFeatureTest
         $this->assertNotNull($author, "Автор не найден в базе данных");
     }
 
+    public function test_show_book_detail_without_auth()
+    {
+        $bookIds = Book::query()->pluck('id')->toArray();
+        $randomBookId = Arr::random($bookIds);
+        $this->route = route('book.show', ['book' => $randomBookId]);
+        $response = parent::makeGetJsonRequest();
+        $response = parent::assertResponseStatusAsUnauthorized($response);
+        $response->assertJson(['message' => 'Unauthenticated.']);
+    }
+
     /**
      * Сценария, когда при просмотре книги передается несуществующий ID книги
      *

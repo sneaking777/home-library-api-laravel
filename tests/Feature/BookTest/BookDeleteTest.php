@@ -61,6 +61,23 @@ class BookDeleteTest extends BaseFeatureTest
     }
 
     /**
+     * Сценарий удаления книги без авторизации
+     *
+     * @return void
+     */
+    public function test_book_delete_without_auth()
+    {
+        $urlParts = parse_url($this->route);
+        $pathParts = explode('/', $urlParts['path']);
+        $bookId = (int)end($pathParts);
+        $this->route = route('book.destroy', ['book' => $bookId]);
+        $this->assertDatabaseHas('books', ['id' => $bookId]);
+        $response = parent::makeDeleteJsonRequest();
+        $response = parent::assertResponseStatusAsUnauthorized($response);
+        $response->assertJson(['message' => 'Unauthenticated.']);
+    }
+
+    /**
      * Сценария, когда при удалении книги передается несуществующий ID книги
      *
      * @return void

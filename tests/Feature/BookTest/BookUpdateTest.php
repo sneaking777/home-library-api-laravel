@@ -100,6 +100,24 @@ class BookUpdateTest extends BaseFeatureTest
     }
 
     /**
+     * Сценарий обновления книги без авторизации
+     *
+     * @return void
+     */
+    public function test_book_update_without_auth()
+    {
+        $urlParts = parse_url($this->route);
+        $pathParts = explode('/', $urlParts['path']);
+        $bookId = (int)end($pathParts);
+        $this->route = route('book.update', ['book' => $bookId]);
+        $book = Book::with('author')->find($bookId);
+        $this->data['author_id'] = $book->author->id;
+        $response = parent::makePutJsonRequest();
+        $response = parent::assertResponseStatusAsUnauthorized($response);
+        $response->assertJson(['message' => 'Unauthenticated.']);
+    }
+
+    /**
      * Сценарий обновления книги с пустым заголовком
      *
      * @return void

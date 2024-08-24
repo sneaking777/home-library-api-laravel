@@ -74,7 +74,8 @@ use OpenApi\Attributes as OA;
                 ),
             ],
 
-        )
+        ),
+        'unauthenticated'
 
     ],
     parameters: [
