@@ -5,6 +5,8 @@ namespace Tests;
 use App\Models\User;
 use Faker\Factory;
 use Faker\Generator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Testing\TestResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\Traits\AssertDateFormat;
@@ -22,6 +24,7 @@ use Tests\Traits\AssertDateFormat;
 abstract class BaseFeatureTest extends TestCase
 {
     use AssertDateFormat;
+    use RefreshDatabase;
 
     /**
      * Данные тела запроса
@@ -192,5 +195,6 @@ abstract class BaseFeatureTest extends TestCase
     {
         $user = User::factory()->create();
         $this->actingAs($user, 'sanctum');
+        $this->assertTrue(Auth::check());
     }
 }

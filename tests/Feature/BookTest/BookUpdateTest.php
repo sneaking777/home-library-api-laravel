@@ -53,9 +53,8 @@ class BookUpdateTest extends BaseFeatureTest
         $this->data = [
             'title' => $this->faker->sentence(3),
         ];
-        $bookIds = Book::query()->pluck('id');
-        $randomBookId = $bookIds->random();
-        $this->route = route('book.update', ['book' => $randomBookId]);
+        $book = Book::factory()->create();
+        $this->route = route('book.update', ['book' => $book->id]);
     }
 
     /**

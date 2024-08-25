@@ -2,24 +2,30 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * Фабрика пользователей
+ *
+ * @extends Factory<User>
+ * @package Database\Factories
+ * @author Alexander Mityukhin <almittt@mail.ru>
+ * @date 25.08.2024 19:42
  */
 class UserFactory extends Factory
 {
     /**
-     * The current password being used by the factory.
+     * @var string|null
      */
     protected static ?string $password;
 
     /**
-     * Define the model's default state.
+     * Определение состояния модели по умолчанию.
      *
-     * @return array<string, mixed>
+     * @return array
      */
     public function definition(): array
     {

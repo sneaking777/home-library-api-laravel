@@ -19,6 +19,7 @@ use Tests\BaseFeatureTest;
  * - Проверка корректности связи книги с ее автором
  * - Существование автора в базе данных
  * - Существование книги в базе данных
+ * - Проверка пользователя на авторизацию
  *
  *
  * @extends BaseFeatureTest
@@ -79,13 +80,12 @@ class ShowBookDetailTest extends BaseFeatureTest
     public function test_show_book_detail(): void
     {
         $this->loginAsUser();
-        $bookIds = Book::query()->pluck('id')->toArray();
-        $randomBookId = Arr::random($bookIds);
-        $this->route = route('book.show', ['book' => $randomBookId]);
+        $book = Book::factory()->create();
+        $this->route = route('book.update', ['book' => $book->id]);
         $response = parent::makeGetJsonRequest();
         $response = parent::assertResponseStatusAsOk($response);
         $response->assertJsonStructure($this->responseJsonStructure);
-        $response->assertJsonPath('data.id', $randomBookId);
+        $response->assertJsonPath('data.id', $book->id);
         $responseData = $response->json();
         $this->assertIsArray($responseData['data']);
         $this->assertIsInt($responseData['data']['id']);
@@ -116,9 +116,8 @@ class ShowBookDetailTest extends BaseFeatureTest
 
     public function test_show_book_detail_without_auth()
     {
-        $bookIds = Book::query()->pluck('id')->toArray();
-        $randomBookId = Arr::random($bookIds);
-        $this->route = route('book.show', ['book' => $randomBookId]);
+        $book = Book::factory()->create();
+        $this->route = route('book.update', ['book' => $book->id]);
         $response = parent::makeGetJsonRequest();
         $response = parent::assertResponseStatusAsUnauthorized($response);
         $response->assertJson(['message' => 'Unauthenticated.']);
@@ -132,8 +131,8 @@ class ShowBookDetailTest extends BaseFeatureTest
     public function test_book_not_found(): void
     {
         $this->loginAsUser();
-        $maxBookId = Book::query()->max('id');
-        $invalidBookId = $maxBookId + 1;
+        $book = Book::factory()->create();
+        $invalidBookId = $book->id + 1;
         $this->route = route('book.show', ['book' => $invalidBookId]);
         $response = parent::makeGetJsonRequest();
         $response = parent::assertResponseStatusAsNotFound($response);

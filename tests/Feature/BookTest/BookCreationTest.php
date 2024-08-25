@@ -3,8 +3,6 @@
 namespace BookTest;
 
 use App\Models\Author;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Testing\TestResponse;
 use Tests\BaseFeatureTest;
 

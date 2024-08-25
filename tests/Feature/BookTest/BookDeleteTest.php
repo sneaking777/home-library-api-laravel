@@ -33,9 +33,8 @@ class BookDeleteTest extends BaseFeatureTest
     {
         parent::setUp();
         $this->setResponseJsonStructure([]);
-        $bookIds = Book::query()->pluck('id');
-        $randomBookId = $bookIds->random();
-        $this->route = route('book.destroy', ['book' => $randomBookId]);
+        $book = Book::factory()->create();
+        $this->route = route('book.update', ['book' => $book->id]);
     }
 
     /**
