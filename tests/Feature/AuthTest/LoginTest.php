@@ -128,7 +128,7 @@ class LoginTest extends BaseFeatureTest
      *
      * @return void
      */
-    public function test_book_creation_with_empty_email(): void
+    public function test_login_with_empty_email(): void
     {
         $this->data['email'] = '';
         $response = parent::makePostJsonRequest();
@@ -141,7 +141,7 @@ class LoginTest extends BaseFeatureTest
      *
      * @return void
      */
-    public function test_book_creation_with_empty_password(): void
+    public function test_login_with_empty_password(): void
     {
         $this->data['password'] = '';
         $response = parent::makePostJsonRequest();

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Класс LoginAction
  *
- * Этот класс отвечает за обработку действий аутентификации в системе
+ * Этот класс отвечает за обработку действий авторизации пользователя в системе
  *
  * @package App\Auth
  * @author Alexander Mityukhin <almittt@mail.ru>

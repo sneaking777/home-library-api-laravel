@@ -14,6 +14,8 @@ use Laravel\Sanctum\HasApiTokens;
  * Модель таблицы 'users'
  *
  * @property string $password
+ * @property string $name
+ * @property string $email
  * @extends Authenticatable
  * @package App\Models
  * @author Alexander Mityukhin <almittt@mail.ru>
