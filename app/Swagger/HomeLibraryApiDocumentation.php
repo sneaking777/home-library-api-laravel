@@ -4,7 +4,7 @@ namespace App\Swagger;
 
 use OpenApi\Attributes as OA;
 
-#[OA\Info(version: "0.1.4", title: "API Системы Управления Домашней Библиотекой")]
+#[OA\Info(version: "0.2.0", title: "API Системы Управления Домашней Библиотекой")]
 #[OA\Server(
     url: 'http://localhost/api/v1',
     description: 'Локальный сервер.',
@@ -12,6 +12,10 @@ use OpenApi\Attributes as OA;
 #[OA\Tag(
     name: 'book',
     description: 'Все эндпоинты API, относящиеся к книгам'
+)]
+#[OA\Tag(
+    name: 'auth',
+    description: 'Все эндпоинты API, относящиеся к аутентификации пользователя'
 )]
 #[OA\Components(
     responses: [
@@ -92,6 +96,37 @@ use OpenApi\Attributes as OA;
                     ),
                     example: [
                         "message" => 'Unauthenticated.',
+                    ],
+                )
+            ]
+        ),
+        'login_validation_error' => new OA\Response(
+            response: 'login_validation_error',
+            description: 'Unprocessable Content',
+            content: [
+                "application/json" => new OA\MediaType(
+                    mediaType: "application/json",
+                    schema: new OA\Schema(
+                        properties: [
+                            'message' => new OA\Property(
+                                property: 'message',
+                                description: 'Сообщение',
+                                type: 'string',
+                            ),
+                            'errors' => new OA\Property(
+                                property: 'errors',
+                                description: 'Массив ошибок',
+                                type: 'string',
+                            ),
+                        ]
+                    ),
+                    example: [
+                        "message" => 'Предоставленные учетные данные неверны.',
+                        "errors" => [
+                            [
+                                "Предоставленные учетные данные неверны."
+                            ]
+                        ]
                     ],
                 )
             ]

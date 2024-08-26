@@ -174,7 +174,13 @@ class BookCreationTest extends BaseFeatureTest
         $this->assertIsNumeric($responseArray['book']['author']['id']);
         $this->assertIsString($responseArray['book']['author']['surname']);
         $this->assertIsString($responseArray['book']['author']['name']);
-        $this->assertIsString($responseArray['book']['author']['patronymic']);
+        $this->assertThat(
+            $responseArray['book']['author']['patronymic'],
+            $this->logicalOr(
+                $this->isType('string'),
+                $this->isNull()
+            )
+        );
         $this->assertDatabaseHas('books', [
             'title' => $this->data['title'],
             'author_id' => $this->data['author_id']

@@ -124,6 +124,33 @@ class LoginTest extends BaseFeatureTest
     }
 
     /**
+     * Сценарий авторизации пользователя в системе с попыткой ввести пустой email
+     *
+     * @return void
+     */
+    public function test_book_creation_with_empty_email(): void
+    {
+        $this->data['email'] = '';
+        $response = parent::makePostJsonRequest();
+        $response = parent::assertResponseStatusAsUnprocessableEntity($response);
+        $response->assertJsonValidationErrors(['email']);
+    }
+
+    /**
+     * Сценарий авторизации пользователя в системе с попыткой ввести пустой пароль
+     *
+     * @return void
+     */
+    public function test_book_creation_with_empty_password(): void
+    {
+        $this->data['password'] = '';
+        $response = parent::makePostJsonRequest();
+        $response = parent::assertResponseStatusAsUnprocessableEntity($response);
+        $response->assertJsonValidationErrors(['password']);
+    }
+
+
+    /**
      * @inheritdoc
      *
      * @param array $structure

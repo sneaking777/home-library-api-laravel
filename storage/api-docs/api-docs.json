@@ -2,7 +2,7 @@
     "openapi": "3.1.0",
     "info": {
         "title": "API Системы Управления Домашней Библиотекой",
-        "version": "0.1.5"
+        "version": "0.2.0"
     },
     "servers": [
         {
@@ -11,6 +11,74 @@
         }
     ],
     "paths": {
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Авторизация",
+                "description": "Запрос на идентификацию и авторизацию пользователя.",
+                "operationId": "071c12c73ada57d09296199486851f15",
+                "requestBody": {
+                    "description": "JSON объект учетных данных пользователя",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "description": "Тело запроса.",
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "email",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "Пароль.",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "example": {
+                                "email": "john.doe@example.com",
+                                "password": "password"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "description": "Токен доступа.",
+                                            "type": "string"
+                                        },
+                                        "token_type": {
+                                            "description": "Тип токена.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "access_token": "2|ioWWhr1rvgJuMGGzpdGD1jagfVaC5JSQV0uIQll480242318",
+                                    "token_type": "Bearer"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/login_validation_error"
+                    }
+                }
+            }
+        },
         "/book": {
             "post": {
                 "tags": [
@@ -417,6 +485,34 @@
                         }
                     }
                 }
+            },
+            "login_validation_error": {
+                "description": "Unprocessable Content",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "description": "Сообщение",
+                                    "type": "string"
+                                },
+                                "errors": {
+                                    "description": "Массив ошибок",
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "example": {
+                            "message": "Предоставленные учетные данные неверны.",
+                            "errors": [
+                                [
+                                    "Предоставленные учетные данные неверны."
+                                ]
+                            ]
+                        }
+                    }
+                }
             }
         },
         "parameters": {
@@ -443,6 +539,10 @@
         {
             "name": "book",
             "description": "Все эндпоинты API, относящиеся к книгам"
+        },
+        {
+            "name": "auth",
+            "description": "Все эндпоинты API, относящиеся к аутентификации пользователя"
         }
     ],
     "security": [

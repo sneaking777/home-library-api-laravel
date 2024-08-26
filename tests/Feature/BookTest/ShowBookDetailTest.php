@@ -4,7 +4,6 @@ namespace BookTest;
 
 use App\Models\Author;
 use App\Models\Book;
-use Illuminate\Support\Arr;
 use Tests\BaseFeatureTest;
 
 /**
@@ -114,6 +113,11 @@ class ShowBookDetailTest extends BaseFeatureTest
         $this->assertNotNull($author, "Автор не найден в базе данных");
     }
 
+    /**
+     * Сценарий просмотра информации о книге без авторизации
+     *
+     * @return void
+     */
     public function test_show_book_detail_without_auth()
     {
         $book = Book::factory()->create();
