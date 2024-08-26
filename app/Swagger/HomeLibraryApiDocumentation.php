@@ -4,7 +4,7 @@ namespace App\Swagger;
 
 use OpenApi\Attributes as OA;
 
-#[OA\Info(version: "0.2.0", title: "API Системы Управления Домашней Библиотекой")]
+#[OA\Info(version: "0.3.0", title: "API Системы Управления Домашней Библиотекой")]
 #[OA\Server(
     url: 'http://localhost/api/v1',
     description: 'Локальный сервер.',

@@ -2,7 +2,7 @@
     "openapi": "3.1.0",
     "info": {
         "title": "API Системы Управления Домашней Библиотекой",
-        "version": "0.2.0"
+        "version": "0.3.0"
     },
     "servers": [
         {
@@ -75,6 +75,141 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/login_validation_error"
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Регистрация",
+                "description": "Запрос на регистрацию пользователя.",
+                "operationId": "2ce5382d83f68a8e8443aeb4ebf7db62",
+                "requestBody": {
+                    "description": "JSON объект данных пользователя",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "description": "Тело запроса.",
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "password_confirmation",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Имя пользователя",
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "email": {
+                                        "description": "email",
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "password": {
+                                        "description": "Пароль.",
+                                        "type": "string",
+                                        "minLength": 6
+                                    },
+                                    "password_confirmation": {
+                                        "description": "Подтверждение пароля.",
+                                        "type": "string",
+                                        "minLength": 6
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "email": "john.doe@example.com",
+                                    "password": "password",
+                                    "password_confirmation": "password",
+                                    "name": "John Doe"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "description": "Имя пользователя.",
+                                            "type": "string",
+                                            "maxLength": 255
+                                        },
+                                        "email": {
+                                            "description": "email.",
+                                            "type": "string",
+                                            "maxLength": 255
+                                        },
+                                        "password": {
+                                            "description": "Пароль.",
+                                            "type": "string",
+                                            "minLength": 6
+                                        },
+                                        "password_confirmation": {
+                                            "description": "Подтверждение пароля.",
+                                            "type": "string",
+                                            "minLength": 6
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "name": "John Doe",
+                                    "email": "john.doe@example.com",
+                                    "id": 1
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Сообщение об ошибке"
+                                        },
+                                        "errors": {
+                                            "description": "Массив ошибок",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "name": {
+                                                                "description": "Невалидное имя пользователя",
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "message": "The name field is required.",
+                                        "errors": {
+                                            "name": [
+                                                "The name field is required."
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
