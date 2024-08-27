@@ -79,6 +79,40 @@
                 }
             }
         },
+        "/auth/logout": {
+            "delete": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Выход",
+                "description": "Запрос на выход пользователя из системы.",
+                "operationId": "e0c2e4ed4cbb888d578e69d855f29b55",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Сообщение",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Выход из системы успешно выполнен"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    }
+                }
+            }
+        },
         "/auth/register": {
             "post": {
                 "tags": [
