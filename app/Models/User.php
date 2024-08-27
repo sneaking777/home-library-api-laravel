@@ -16,6 +16,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $password
  * @property string $name
  * @property string $email
+ * @method createToken(string $tokenName)
+ * @method withAccessToken($accessToken)
  * @extends Authenticatable
  * @package App\Models
  * @author Alexander Mityukhin <almittt@mail.ru>

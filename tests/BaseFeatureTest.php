@@ -185,16 +185,19 @@ abstract class BaseFeatureTest extends TestCase
         return $response->assertStatus(Response::HTTP_NO_CONTENT);
     }
 
+
     /**
      * Вход в систему под пользователем.
      * Метод создает новую учетную запись пользователя с помощью фабрики и устанавливает ее как текущую.
      *
-     * @return void
+     * @return User
      */
-    protected function loginAsUser(): void
+    protected function loginAsUser(): User
     {
         $user = User::factory()->create();
         $this->actingAs($user, 'sanctum');
         $this->assertTrue(Auth::check());
+
+        return $user;
     }
 }

@@ -16,7 +16,7 @@
 
 return [
     'success' => [
-        'book_deleted' => 'Книга успешно удалена',
-        'logout' => 'Выход из системы успешно выполнен'
+        'book_deleted' => 'The book has been successfully deleted',
+        'logout' => 'Successfully logged out'
     ]
 ];

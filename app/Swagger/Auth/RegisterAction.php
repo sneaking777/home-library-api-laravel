@@ -128,8 +128,6 @@ use Symfony\Component\HttpFoundation\Response;
                                                 )
                                             ]
                                         )
-
-
                                     )
                                 ],
                                 type: 'object'
