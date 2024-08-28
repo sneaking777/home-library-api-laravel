@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Auth;
+namespace App\Auth\Actions;
 
+use App\Auth\Requests\LoginRequest;
 use App\Responders\BaseResponder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Класс LogoutAction
+ * Класс LoginAction
  *
- * Этот класс отвечает за обработку действий выхода пользователя из системы
+ * Этот класс отвечает за обработку действий авторизации пользователя в системе
  *
  * @package App\Auth
  * @author Alexander Mityukhin <almittt@mail.ru>
- * @date 26.08.2024 12:04
+ * @date 25.08.2024 1:01
  */
-readonly class LogoutAction
+readonly class LoginAction
 {
     /**
      * @var BaseResponder
@@ -36,13 +36,17 @@ readonly class LogoutAction
     /**
      * Призыватель
      *
-     * @param Request $request
+     * @param LoginRequest $request
      * @return JsonResponse
      */
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(LoginRequest $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
-        $result['data'] = ['message' => __('messages.success.logout')];
+
+        $tokenName = $request->ip() . '-' . now();
+        $result['data'] = [
+            'access_token' => $request->user->createToken($tokenName)->plainTextToken,
+            'token_type' => 'Bearer'
+        ];
         $result['status'] = Response::HTTP_OK;
 
         return $this->responder->respond($result['data'], $result['status']);

@@ -3,10 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Auth\Domain\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use SensitiveParameter;
 
 /**
  * Класс User
@@ -61,5 +63,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Отправляет уведомление о сбросе пароля.
+     *
+     * Этот метод генерирует уведомление о сбросе пароля и отправляет его пользователю.
+     * Токен для сброса пароля, передаваемый в этот метод, является чувствительным параметром
+     * и должен быть обработан соответствующим образом.
+     *
+     * @param string $token токен для сброса пароля.
+     * @return void
+     */
+    public function sendPasswordResetNotification(#[SensitiveParameter] $token): void
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

@@ -18,5 +18,17 @@ return [
     'success' => [
         'book_deleted' => 'The book has been successfully deleted',
         'logout' => 'Successfully logged out'
+    ],
+    'not_found' => [
+        'user' => 'User not found.'
+    ],
+    'password_reset' => 'We have emailed you a password reset link!',
+    'mail' => [
+        'password_reset' => [
+            'subject' => 'Сброс пароля',
+            'message' => 'Вы получили это письмо, потому что мы получили запрос на сброс пароля для вашей учетной записи.',
+            'action' => 'Нажмите здесь, чтобы сбросить пароль',
+            'warning' => 'Если вы не запрашивали сброс пароля, то никаких дальнейших действий не требуется.'
+        ]
     ]
 ];

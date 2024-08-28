@@ -1,8 +1,10 @@
 <?php
 
-use App\Auth\LoginAction;
-use App\Auth\LogoutAction;
-use App\Auth\RegisterAction;
+use App\Auth\Actions\ForgotPasswordAction;
+use App\Auth\Actions\LoginAction;
+use App\Auth\Actions\LogoutAction;
+use App\Auth\Actions\RegisterAction;
+use App\Auth\Actions\ResetPasswordAction;
 use App\Authors\Actions\CreateAuthorAction;
 use App\Books\Actions\CreateBookAction;
 use App\Books\Actions\DeleteBookAction;
@@ -23,6 +25,8 @@ Route::prefix('v1')->group(function () {
         Route::post('/register', RegisterAction::class)->name('auth.register');
         Route::delete('/logout', LogoutAction::class)->name('auth.logout')
             ->middleware('auth:sanctum');
+        Route::post('/forgot-password', ForgotPasswordAction::class)->name('auth.forgot');
+        Route::post('/reset-password', ResetPasswordAction::class)->name('auth.reset');
     });
 
     Route::prefix('book')
