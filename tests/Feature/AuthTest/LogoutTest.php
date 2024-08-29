@@ -64,14 +64,4 @@ class LogoutTest extends BaseFeatureTest
         $response = $this->assertResponseStatusAsUnauthorized($response);
         $response->assertJson(['message' => 'Unauthenticated.']);
     }
-
-    /**
-     * @inheritdoc
-     *
-     * @param array $structure
-     * @return void
-     */
-    protected function setResponseJsonStructure(array $structure): void
-    {
-    }
 }

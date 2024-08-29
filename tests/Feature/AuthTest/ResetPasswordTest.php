@@ -21,13 +21,6 @@ use Tests\BaseFeatureTest;
 class ResetPasswordTest extends BaseFeatureTest
 {
     /**
-     * Структура JSON в ответе
-     *
-     * @var array
-     */
-    private array $responseJsonStructure;
-
-    /**
      * @inheritdoc
      *
      * @return void
@@ -62,7 +55,7 @@ class ResetPasswordTest extends BaseFeatureTest
     {
         $response = $this->makePostJsonRequest();
         $response = $this->assertResponseStatusAsOk($response);
-        $response->assertJsonStructure($this->responseJsonStructure);
+        $response->assertJsonStructure($this->getResponseJsonStructure());
         $response->assertJson([
             'message' => __('messages.new_password'),
         ]);
@@ -81,7 +74,7 @@ class ResetPasswordTest extends BaseFeatureTest
         ]);
         $response = $this->makePostJsonRequest();
         $response = $this->assertResponseStatusAsUnprocessableEntity($response);
-        $response->assertJsonStructure($this->responseJsonStructure);
+        $response->assertJsonStructure($this->getResponseJsonStructure());
         $response->assertJson([
             'error' => __('errors.password_reset'),
         ]);
@@ -103,7 +96,7 @@ class ResetPasswordTest extends BaseFeatureTest
         ]);
         $response = $this->makePostJsonRequest();
         $response = $this->assertResponseStatusAsUnprocessableEntity($response);
-        $response->assertJsonStructure($this->responseJsonStructure);
+        $response->assertJsonStructure($this->getResponseJsonStructure());
         $response->assertJsonValidationErrors('token');
 
     }
@@ -124,7 +117,7 @@ class ResetPasswordTest extends BaseFeatureTest
         ]);
         $response = $this->makePostJsonRequest();
         $response = $this->assertResponseStatusAsUnprocessableEntity($response);
-        $response->assertJsonStructure($this->responseJsonStructure);
+        $response->assertJsonStructure($this->getResponseJsonStructure());
         $response->assertJsonValidationErrors('email');
     }
 
@@ -144,7 +137,7 @@ class ResetPasswordTest extends BaseFeatureTest
         ]);
         $response = $this->makePostJsonRequest();
         $response = $this->assertResponseStatusAsUnprocessableEntity($response);
-        $response->assertJsonStructure($this->responseJsonStructure);
+        $response->assertJsonStructure($this->getResponseJsonStructure());
         $response->assertJsonValidationErrors('email');
     }
 
@@ -165,7 +158,7 @@ class ResetPasswordTest extends BaseFeatureTest
         ]);
         $response = $this->makePostJsonRequest();
         $response = $this->assertResponseStatusAsUnprocessableEntity($response);
-        $response->assertJsonStructure($this->responseJsonStructure);
+        $response->assertJsonStructure($this->getResponseJsonStructure());
         $response->assertJsonValidationErrors('email');
     }
 
@@ -185,7 +178,7 @@ class ResetPasswordTest extends BaseFeatureTest
         ]);
         $response = $this->makePostJsonRequest();
         $response = $this->assertResponseStatusAsUnprocessableEntity($response);
-        $response->assertJsonStructure($this->responseJsonStructure);
+        $response->assertJsonStructure($this->getResponseJsonStructure());
         $response->assertJsonValidationErrors('password');
     }
 
@@ -205,7 +198,7 @@ class ResetPasswordTest extends BaseFeatureTest
         ]);
         $response = $this->makePostJsonRequest();
         $response = $this->assertResponseStatusAsUnprocessableEntity($response);
-        $response->assertJsonStructure($this->responseJsonStructure);
+        $response->assertJsonStructure($this->getResponseJsonStructure());
         $response->assertJsonValidationErrors('password');
     }
 
@@ -226,20 +219,7 @@ class ResetPasswordTest extends BaseFeatureTest
         ]);
         $response = $this->makePostJsonRequest();
         $response = $this->assertResponseStatusAsUnprocessableEntity($response);
-        $response->assertJsonStructure($this->responseJsonStructure);
+        $response->assertJsonStructure($this->getResponseJsonStructure());
         $response->assertJsonValidationErrors('password');
-    }
-
-
-
-    /**
-     * @inheritdoc
-     *
-     * @param array $structure
-     * @return void
-     */
-    protected function setResponseJsonStructure(array $structure): void
-    {
-        $this->responseJsonStructure = $structure;
     }
 }

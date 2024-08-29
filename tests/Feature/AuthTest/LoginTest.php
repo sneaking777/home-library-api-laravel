@@ -28,15 +28,6 @@ class LoginTest extends BaseFeatureTest
 
     const INVALID_PASSWORD = 'invalid_password';
 
-
-    /**
-     * Структура JSON в ответе
-     *
-     * @var array
-     */
-    private array $responseJsonStructure;
-
-
     /**
      * @inheritdoc
      *
@@ -69,7 +60,7 @@ class LoginTest extends BaseFeatureTest
         ]);
         $response = $this->makePostJsonRequest();
         $response = $this->assertResponseStatusAsOk($response);
-        $response->assertJsonStructure($this->responseJsonStructure);
+        $response->assertJsonStructure($this->getResponseJsonStructure());
         $response->assertJson(['token_type' => 'Bearer']);
     }
 
@@ -147,17 +138,5 @@ class LoginTest extends BaseFeatureTest
         $response = parent::makePostJsonRequest();
         $response = parent::assertResponseStatusAsUnprocessableEntity($response);
         $response->assertJsonValidationErrors(['password']);
-    }
-
-
-    /**
-     * @inheritdoc
-     *
-     * @param array $structure
-     * @return void
-     */
-    protected function setResponseJsonStructure(array $structure): void
-    {
-        $this->responseJsonStructure = $structure;
     }
 }

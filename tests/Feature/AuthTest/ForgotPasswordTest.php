@@ -21,13 +21,6 @@ use Tests\BaseFeatureTest;
 class ForgotPasswordTest extends BaseFeatureTest
 {
     /**
-     * Структура JSON в ответе
-     *
-     * @var array
-     */
-    private array $responseJsonStructure;
-
-    /**
      * @inheritdoc
      *
      * @return void
@@ -54,7 +47,7 @@ class ForgotPasswordTest extends BaseFeatureTest
         User::factory()->create(['email' => 'john@example.com']);
         $response = $this->makePostJsonRequest();
         $response = $this->assertResponseStatusAsOk($response);
-        $response->assertJsonStructure($this->responseJsonStructure);
+        $response->assertJsonStructure($this->getResponseJsonStructure());
         $response->assertJson([
             'message' => __('messages.password_reset'),
         ]);
@@ -69,21 +62,9 @@ class ForgotPasswordTest extends BaseFeatureTest
     {
         $response = $this->makePostJsonRequest();
         $response = $this->assertResponseStatusAsNotFound($response);
-        $response->assertJsonStructure($this->responseJsonStructure);
+        $response->assertJsonStructure($this->getResponseJsonStructure());
         $response->assertJson([
             'message' => __('messages.not_found.user'),
         ]);
-    }
-
-
-    /**
-     * @inheritdoc
-     *
-     * @param array $structure
-     * @return void
-     */
-    protected function setResponseJsonStructure(array $structure): void
-    {
-        $this->responseJsonStructure = $structure;
     }
 }

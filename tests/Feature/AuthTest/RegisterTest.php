@@ -18,14 +18,6 @@ use Tests\BaseFeatureTest;
 class RegisterTest extends BaseFeatureTest
 {
 
-    /**
-     * Структура JSON в ответе
-     *
-     * @var array
-     */
-    private array $responseJsonStructure;
-
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -52,7 +44,7 @@ class RegisterTest extends BaseFeatureTest
     {
         $response = $this->makePostJsonRequest();
         $response = $this->assertResponseStatusAsCreated($response);
-        $response->assertJsonIsObject()->assertJsonStructure($this->responseJsonStructure);
+        $response->assertJsonIsObject()->assertJsonStructure($this->getResponseJsonStructure());
         $responseArray = json_decode($response->getContent(), true);
         $this->assertIsString($responseArray['name']);
         $this->assertIsString($responseArray['email']);
@@ -228,16 +220,5 @@ class RegisterTest extends BaseFeatureTest
         $response = parent::makePostJsonRequest();
         $response = parent::assertResponseStatusAsUnprocessableEntity($response);
         $response->assertJsonValidationErrors(['password']);
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @param array $structure
-     * @return void
-     */
-    protected function setResponseJsonStructure(array $structure): void
-    {
-        $this->responseJsonStructure = $structure;
     }
 }

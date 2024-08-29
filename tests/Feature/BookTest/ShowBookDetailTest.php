@@ -29,13 +29,6 @@ use Tests\BaseFeatureTest;
 class ShowBookDetailTest extends BaseFeatureTest
 {
     /**
-     * Структура JSON в ответе
-     *
-     * @var array
-     */
-    private array $responseJsonStructure;
-
-    /**
      * @inheritdoc
      *
      * @return void
@@ -61,17 +54,6 @@ class ShowBookDetailTest extends BaseFeatureTest
     }
 
     /**
-     * @inheritdoc
-     *
-     * @param array $structure
-     * @return void
-     */
-    protected function setResponseJsonStructure(array $structure): void
-    {
-        $this->responseJsonStructure = $structure;
-    }
-
-    /**
      * Сценарий по отображению данных конкретной книги
      *
      * @return void
@@ -83,7 +65,7 @@ class ShowBookDetailTest extends BaseFeatureTest
         $this->route = route('book.update', ['book' => $book->id]);
         $response = parent::makeGetJsonRequest();
         $response = parent::assertResponseStatusAsOk($response);
-        $response->assertJsonStructure($this->responseJsonStructure);
+        $response->assertJsonStructure($this->getResponseJsonStructure());
         $response->assertJsonPath('data.id', $book->id);
         $responseData = $response->json();
         $this->assertIsArray($responseData['data']);

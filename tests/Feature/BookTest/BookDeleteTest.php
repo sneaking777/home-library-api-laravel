@@ -92,15 +92,4 @@ class BookDeleteTest extends BaseFeatureTest
         $response->assertJsonStructure(['message']);
         $response->assertJsonPath('message', __('exceptions.not_found.book'));
     }
-
-
-    /**
-     * @inheritdoc
-     *
-     * @param array $structure
-     * @return void
-     */
-    protected function setResponseJsonStructure(array $structure): void
-    {
-    }
 }

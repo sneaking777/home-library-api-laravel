@@ -21,10 +21,18 @@ use Tests\Traits\AssertDateFormat;
  * @author Alexander Mityukhin <almittt@mail.ru>
  * @date 12.08.2024 9:02
  */
-abstract class BaseFeatureTest extends TestCase
+class BaseFeatureTest extends TestCase
 {
     use AssertDateFormat;
     use RefreshDatabase;
+
+    /**
+     * Структура JSON в ответе
+     *
+     * @var array
+     */
+    private array $responseJsonStructure;
+
 
     /**
      * Данные тела запроса
@@ -60,7 +68,20 @@ abstract class BaseFeatureTest extends TestCase
      * @param array $structure
      * @return void
      */
-    abstract protected function setResponseJsonStructure(array $structure): void;
+    protected function setResponseJsonStructure(array $structure): void
+    {
+        $this->responseJsonStructure = $structure;
+    }
+
+    /**
+     * Возвращает структуру JSON в ответе
+     *
+     * @return array
+     */
+    protected function getResponseJsonStructure(): array
+    {
+        return $this->responseJsonStructure;
+    }
 
     /**
      * Настраивает тестовую среду перед каждым тестом.

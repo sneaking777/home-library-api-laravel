@@ -21,14 +21,6 @@ use Tests\BaseFeatureTest;
  */
 class BookCreationTest extends BaseFeatureTest
 {
-
-    /**
-     * Структура JSON в ответе
-     *
-     * @var array
-     */
-    private array $responseJsonStructure;
-
     /**
      * @inheritdoc
      *
@@ -161,7 +153,7 @@ class BookCreationTest extends BaseFeatureTest
         $response = parent::assertResponseStatusAsCreated($response);
         $response = parent::assertResponseStatusAsCreated($response)
             ->assertJsonIsObject()
-            ->assertJsonStructure($this->responseJsonStructure)
+            ->assertJsonStructure($this->getResponseJsonStructure())
             ->assertJsonPath('message', 'Книга успешно создана.')
             ->assertJsonPath('book.title', $this->data['title'])
             ->assertJsonPath('book.author.id', $this->data['author_id']);
@@ -185,16 +177,5 @@ class BookCreationTest extends BaseFeatureTest
             'title' => $this->data['title'],
             'author_id' => $this->data['author_id']
         ]);
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @param array $structure
-     * @return void
-     */
-    protected function setResponseJsonStructure(array $structure): void
-    {
-        $this->responseJsonStructure = $structure;
     }
 }
