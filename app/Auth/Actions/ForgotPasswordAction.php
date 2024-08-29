@@ -47,10 +47,11 @@ readonly class ForgotPasswordAction
         if (!$user) {
 
             return $this->responder->respond([
-                'message' => __('messages.not_found_user')
+                'message' => __('messages.not_found.user')
             ], Response::HTTP_NOT_FOUND);
         }
         $token = Password::getRepository()->create($user);
+        // TODO в будущем следует написать Unit тест для $user->sendPasswordResetNotification($token)
         $user->sendPasswordResetNotification($token);
 
         return $this->responder->respond([

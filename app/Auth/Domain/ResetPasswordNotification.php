@@ -48,6 +48,7 @@ class ResetPasswordNotification extends Notification
         $url = url()->to(
             route('auth.reset', [], false) . '?' . http_build_query([
                 'token' => $this->token, 'email' => $notifiable->getEmailForPasswordReset()]));
+
         return (new MailMessage)
             ->subject(__('messages.mail.password_reset.subject'))
             ->line(__('messages.mail.password_reset.message'))
