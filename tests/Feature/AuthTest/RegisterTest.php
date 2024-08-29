@@ -48,7 +48,7 @@ class RegisterTest extends BaseFeatureTest
      *
      * @return void
      */
-    public function test_register()
+    public function test_register(): void
     {
         $response = $this->makePostJsonRequest();
         $response = $this->assertResponseStatusAsCreated($response);

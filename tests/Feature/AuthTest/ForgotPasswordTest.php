@@ -56,7 +56,7 @@ class ForgotPasswordTest extends BaseFeatureTest
         $response = $this->assertResponseStatusAsOk($response);
         $response->assertJsonStructure($this->responseJsonStructure);
         $response->assertJson([
-            'message' => 'Мы выслали вам ссылку для сброса пароля по электронной почте!',
+            'message' => __('messages.password_reset'),
         ]);
     }
 
@@ -71,7 +71,7 @@ class ForgotPasswordTest extends BaseFeatureTest
         $response = $this->assertResponseStatusAsNotFound($response);
         $response->assertJsonStructure($this->responseJsonStructure);
         $response->assertJson([
-            'message' => 'Пользователь не найден.',
+            'message' => __('messages.not_found.user'),
         ]);
     }
 
