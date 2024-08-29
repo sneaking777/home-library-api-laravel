@@ -2,7 +2,7 @@
     "openapi": "3.1.0",
     "info": {
         "title": "API Системы Управления Домашней Библиотекой",
-        "version": "0.3.0"
+        "version": "0.5.0"
     },
     "servers": [
         {
@@ -11,6 +11,80 @@
         }
     ],
     "paths": {
+        "/auth/forgot-password": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Сброс пароля",
+                "description": "Запрос на сброс пароля",
+                "operationId": "ebc784da7fb6aa4c4ab782d94e811929",
+                "requestBody": {
+                    "description": "JSON объект учетных данных пользователя для сброса пароля",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "description": "Тело запроса.",
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "email",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "example": {
+                                "email": "john.doe@example.com"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Сообщение.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Мы выслали вам ссылку для сброса пароля по электронной почте!"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Сообщение.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Пользователь не найден."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "tags": [

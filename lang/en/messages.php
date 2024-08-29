@@ -23,12 +23,13 @@ return [
         'user' => 'User not found.'
     ],
     'password_reset' => 'We have emailed you a password reset link!',
+    'new_password' => 'Password Successfully Reset.',
     'mail' => [
         'password_reset' => [
-            'subject' => 'Сброс пароля',
-            'message' => 'Вы получили это письмо, потому что мы получили запрос на сброс пароля для вашей учетной записи.',
-            'action' => 'Нажмите здесь, чтобы сбросить пароль',
-            'warning' => 'Если вы не запрашивали сброс пароля, то никаких дальнейших действий не требуется.'
+            'subject' => 'Password Reset',
+            'message' => 'You are receiving this email because we received a password reset request for your account.',
+            'action' => 'Click here to reset password',
+            'warning' => 'If you did not request a password reset, no further action is required.'
         ]
     ]
 ];
