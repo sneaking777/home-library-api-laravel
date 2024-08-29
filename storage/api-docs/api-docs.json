@@ -2,7 +2,7 @@
     "openapi": "3.1.0",
     "info": {
         "title": "API Системы Управления Домашней Библиотекой",
-        "version": "0.5.0"
+        "version": "0.6.0"
     },
     "servers": [
         {
@@ -16,8 +16,8 @@
                 "tags": [
                     "auth"
                 ],
-                "summary": "Сброс пароля",
-                "description": "Запрос на сброс пароля",
+                "summary": "Восстановление пароля",
+                "description": "Запрос на получение ссылки по email на восстановление пароля",
                 "operationId": "ebc784da7fb6aa4c4ab782d94e811929",
                 "requestBody": {
                     "description": "JSON объект учетных данных пользователя для сброса пароля",
@@ -26,8 +26,7 @@
                             "schema": {
                                 "description": "Тело запроса.",
                                 "required": [
-                                    "email",
-                                    "password"
+                                    "email"
                                 ],
                                 "properties": {
                                     "email": {
@@ -315,6 +314,99 @@
                                             ]
                                         }
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/reset-password": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Сброс пароля",
+                "description": "Запрос на сброс и получение нового пароля",
+                "operationId": "c41b6848f6e02f6bbd44b71fb1e9ecec",
+                "requestBody": {
+                    "description": "JSON объект учетных данных пользователя для сброса пароля",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "description": "Тело запроса.",
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "password_confirmation",
+                                    "token"
+                                ],
+                                "properties": {
+                                    "token": {
+                                        "description": "token сброса пароля",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "email",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "Новый пароль.",
+                                        "type": "string",
+                                        "minLength": 6
+                                    },
+                                    "password_confirmation": {
+                                        "description": "Подтверждение нового пароля.",
+                                        "type": "string",
+                                        "minLength": 6
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "example": {
+                                "token": "bb0bdfe208d0bc60f567fcb168fe561dca5ac9581bb4fd8e97e6037b2276194d",
+                                "email": "john.doe@example.com",
+                                "password": "123456",
+                                "password_confirmation": "123456"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Сообщение.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Пароль успешно сброшен."
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "description": "Сообщение об ошибке",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "error": "Не удалось сбросить пароль."
                                 }
                             }
                         }
