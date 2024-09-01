@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\GendersEnum;
+use App\FakerProviders\PatronymicFakerProvider;
 use App\Models\Author;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,16 +26,18 @@ class AuthorFactory extends Factory
     protected $model = Author::class;
 
     /**
-     * Определение состояния модели по умолчанию.
+     * @inheritdoc
      *
      * @return array
      */
     public function definition(): array
     {
-        $gender = rand(1, 2) === 1 ? 'male' : 'female';
+        $gender = rand(1, 2) === 1 ? GendersEnum::MALE->value : GendersEnum::FEMALE->value;
         $firstName = $this->faker->firstName($gender);
         $lastName = $this->faker->lastName($gender);
-        $patronymic = rand(1, 20) === 1 ? null : $this->makePatronymic($gender);
+        $this->faker->addProvider(new PatronymicFakerProvider($this->faker));
+        $fatherName = $this->faker->firstName(GendersEnum::MALE->value);
+        $patronymic = rand(1, 20) === 1 ? null : $this->faker->makeRussianPatronymic($gender, $fatherName);;
 
         return [
             'name' => $firstName,
@@ -42,37 +46,5 @@ class AuthorFactory extends Factory
         ];
     }
 
-    /**
-     * Склонение имени в русском языке для отчества.
-     *
-     * @param $gender
-     * @return string
-     */
-    private function makePatronymic($gender): string
-    {
-        $firstName = $this->faker->firstName('male');
-        $end = mb_substr($firstName, -1);
-        if ($end === 'й') {
-            $baseName = mb_substr($firstName, 0, -1);
-            $suffix = $gender === 'male' ? 'евич' : 'ьевна';
-        } else if ($end === 'ь') {
-            $suffix = $gender === 'male' ? 'ич' : 'на';
-            $baseName = $firstName;
-        } else if ($end === 'я') {
-            $suffix = $gender === 'male' ? 'ич' : 'ьевна';
-            $baseName = $firstName;
 
-        } else if ($end === 'а') {
-            $suffix = $gender === 'male' ? 'ич' : 'на';
-            $baseName = $firstName;
-        }
-        else {
-                $suffix = $gender === 'male' ? 'ович' : 'овна';
-                $baseName = $firstName;
-            }
-
-            return $baseName . $suffix;
-
-        }
-
-    }
+}

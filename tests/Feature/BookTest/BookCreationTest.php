@@ -9,7 +9,7 @@ use Tests\BaseFeatureTest;
 /**
  * Класс BookCreationTest
  *
- * Этот класс содержит набор тестовых сценариев относящихся к процессу создания книг в нашем приложении.
+ * Этот класс содержит набор тестовых сценариев относящихся к процессу создания книг в приложении.
  * Он включает в себя тесты, которые проверяют различные аспекты и возможные граничные случаи создания книг,
  * такие как корректность передаваемых данных, уникальность названия книги,
  * ограничения длины для названия книги и другие бизнес-правила.
@@ -89,7 +89,7 @@ class BookCreationTest extends BaseFeatureTest
         }
         $response = parent::makePostJsonRequest();
         $response = parent::assertResponseStatusAsUnauthorized($response);
-        $response->assertJson(['message' => 'Unauthenticated.']);
+        $response->assertJson(['message' => __('messages.unauthenticated')]);
     }
 
     /**
@@ -150,11 +150,10 @@ class BookCreationTest extends BaseFeatureTest
      */
     private function assertBookFields(TestResponse $response): void
     {
-        $response = parent::assertResponseStatusAsCreated($response);
         $response = parent::assertResponseStatusAsCreated($response)
             ->assertJsonIsObject()
             ->assertJsonStructure($this->getResponseJsonStructure())
-            ->assertJsonPath('message', 'Книга успешно создана.')
+            ->assertJsonPath('message', __('messages.success.book.created'))
             ->assertJsonPath('book.title', $this->data['title'])
             ->assertJsonPath('book.author.id', $this->data['author_id']);
         $responseArray = json_decode($response->getContent(), true);

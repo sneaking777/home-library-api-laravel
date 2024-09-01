@@ -91,7 +91,8 @@ class BaseFeatureTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->faker = Factory::create();
+        // TODO доработать установку локали для Faker
+        $this->faker = Factory::create('ru_RU');
         $this->headers = ['Accept' => 'application/json'];
     }
 

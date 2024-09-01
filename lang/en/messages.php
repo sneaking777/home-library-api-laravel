@@ -16,12 +16,18 @@
 
 return [
     'success' => [
-        'book_deleted' => 'The book has been successfully deleted',
-        'logout' => 'Successfully logged out'
+        'book' => [
+          'created' => 'Book successfully created.'
+        ],
+        'logout' => 'Successfully logged out',
+        'author' => [
+            'created' => 'Author successfully created.'
+        ]
     ],
     'not_found' => [
         'user' => 'User not found.'
     ],
+    'unauthenticated' => 'Unauthenticated.',
     'password_reset' => 'We have emailed you a password reset link!',
     'new_password' => 'Password Successfully Reset.',
     'mail' => [

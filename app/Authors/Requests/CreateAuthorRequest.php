@@ -28,7 +28,7 @@ class CreateAuthorRequest extends DefaultRequest
         return [
             'surname' => 'required|string|max:100',
             'name' => 'required|string|max:100',
-            'patronymic' => 'required|string|max:100',
+            'patronymic' => 'string|max:100',
         ];
     }
 }

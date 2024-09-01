@@ -16,5 +16,8 @@ return [
         'author' => 'The author of the book was not found.',
         'book' => 'The requested book was not found.'
     ],
-    'not_authorized' => 'The provided credentials are incorrect.'
+    'not_authorized' => 'The provided credentials are incorrect.',
+    'invalid_argument' => [
+        'gender' => 'Invalid gender provided.'
+    ]
 ];
