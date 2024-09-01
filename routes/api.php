@@ -38,7 +38,7 @@ Route::prefix('v1')->group(function () {
             Route::delete('/{book}', DeleteBookAction::class)->name('book.destroy');
         });
 
-    Route::prefix('author')->group(function () {
-        Route::post('/', CreateAuthorAction::class);
+    Route::prefix('author')->middleware('auth:sanctum')->group(function () {
+        Route::post('/', CreateAuthorAction::class)->name('author.store');
     });
 });

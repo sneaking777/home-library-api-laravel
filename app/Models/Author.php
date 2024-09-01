@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Model;
  * Модель таблицы 'authors'
  *
  *
+ * @property string $surname
+ * @property string $name
+ * @property string $patronymic
  * @extends Model
  * @package App\Models
  * @author Alexander Mityukhin <almittt@mail.ru>
