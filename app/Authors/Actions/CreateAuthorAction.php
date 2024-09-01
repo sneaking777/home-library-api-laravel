@@ -51,7 +51,7 @@ readonly class CreateAuthorAction
 
         $author->save();
         $result['data'] = [
-            'message' => 'Автор успешно создана.',
+            'message' => 'Автор успешно создан.',
             'author' => new AuthorResource($author),
 
         ];
