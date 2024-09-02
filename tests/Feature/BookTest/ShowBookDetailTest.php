@@ -9,7 +9,7 @@ use Tests\BaseFeatureTest;
 /**
  * Класс ShowBookDetailTest
  *
- * Класс для тестирования информации о книге.
+ * Класс для тестирования просмотра информации о книге.
  *
  * Этот класс содержит методы для проверки следующего функционала:
  * - Возврат правильного JSON ответа при запросе деталей книги
@@ -62,7 +62,7 @@ class ShowBookDetailTest extends BaseFeatureTest
     {
         $this->loginAsUser();
         $book = Book::factory()->create();
-        $this->route = route('book.update', ['book' => $book->id]);
+        $this->route = route('book.show', ['book' => $book->id]);
         $response = parent::makeGetJsonRequest();
         $response = parent::assertResponseStatusAsOk($response);
         $response->assertJsonStructure($this->getResponseJsonStructure());
@@ -103,10 +103,10 @@ class ShowBookDetailTest extends BaseFeatureTest
     public function test_show_book_detail_without_auth()
     {
         $book = Book::factory()->create();
-        $this->route = route('book.update', ['book' => $book->id]);
+        $this->route = route('book.show', ['book' => $book->id]);
         $response = parent::makeGetJsonRequest();
         $response = parent::assertResponseStatusAsUnauthorized($response);
-        $response->assertJson(['message' => 'Unauthenticated.']);
+        $response->assertJson(['message' => __('messages.unauthenticated')]);
     }
 
     /**
