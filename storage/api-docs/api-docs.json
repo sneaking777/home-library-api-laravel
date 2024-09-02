@@ -576,6 +576,110 @@
                         "$ref": "#/components/responses/unauthenticated"
                     }
                 }
+            },
+            "put": {
+                "tags": [
+                    "author"
+                ],
+                "summary": "Обновление о автора",
+                "description": "Запрос на обновление автора.",
+                "operationId": "d223434169b0f354af538ca60fc3e979",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/author"
+                    }
+                ],
+                "requestBody": {
+                    "description": "JSON объект для обновления автора",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "description": "Тело запроса.",
+                                "required": [
+                                    "surname",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "surname": {
+                                        "description": "Фамилия",
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "name": {
+                                        "description": "Имя",
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "patronymic": {
+                                        "description": "Отчество",
+                                        "type": "string",
+                                        "maxLength": 100
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "example": {
+                                "surname": "Иванов",
+                                "name": "Иван",
+                                "patronymic": "Иванович"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Сообщение.",
+                                            "type": "string"
+                                        },
+                                        "author": {
+                                            "description": "Информация о авторе.",
+                                            "properties": {
+                                                "id": {
+                                                    "description": "ID автора.",
+                                                    "type": "integer"
+                                                },
+                                                "surname": {
+                                                    "description": "Фамилия автора",
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "description": "Имя автора",
+                                                    "type": "string"
+                                                },
+                                                "patronymic": {
+                                                    "description": "Отчество автора",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Автор успешно обновлен.",
+                                    "author": {
+                                        "surname": "Иванов",
+                                        "name": "Иван",
+                                        "patronymic": "Иванович"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not_found"
+                    }
+                }
             }
         },
         "/book": {
