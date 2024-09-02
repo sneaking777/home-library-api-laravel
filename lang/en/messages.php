@@ -17,11 +17,13 @@
 return [
     'success' => [
         'book' => [
-          'created' => 'Book successfully created.'
+            'created' => 'Book successfully created.',
+            'updated' => 'The book has been updated successfully.',
         ],
         'logout' => 'Successfully logged out',
         'author' => [
-            'created' => 'Author successfully created.'
+            'created' => 'Author successfully created.',
+            'updated' => 'The author has been updated successfully.',
         ]
     ],
     'not_found' => [

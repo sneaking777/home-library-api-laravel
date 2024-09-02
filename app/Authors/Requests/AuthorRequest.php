@@ -5,7 +5,7 @@ namespace App\Authors\Requests;
 use App\Http\Requests\DefaultRequest;
 
 /**
- * Класс CreateAuthorRequest отвечает за валидацию и обработку
+ * Класс AuthorRequest отвечает за валидацию и обработку
  * входящих данных при создании новой записи о авторе.
  *
  * @property string $surname
@@ -16,7 +16,7 @@ use App\Http\Requests\DefaultRequest;
  * @author Alexander Mityukhin <almittt@mail.ru>
  * @date 01.09.2024 9:42
  */
-class CreateAuthorRequest extends DefaultRequest
+class AuthorRequest extends DefaultRequest
 {
     /**
      * Правила валидации

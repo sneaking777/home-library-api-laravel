@@ -10,16 +10,15 @@ use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Класс CreateAuthorDocumentation
+ * Класс UpdateAuthorAction
  *
- * Класс предназначен для создания нового автора в приложении.
- * В частности, он обрабатывает запросы на создание новых авторов и сохраняет их в хранилище данных
+ * Класс предназначен для обработки запросов на обновление информации об авторе
  *
  * @package App\Authors\Actions
  * @author Alexander Mityukhin <almittt@mail.ru>
- * @date 01.09.2024 10:11
+ * @date 02.09.2024 11:25
  */
-readonly class CreateAuthorAction
+readonly class UpdateAuthorAction
 {
     /**
      * @var BaseResponder
@@ -40,22 +39,18 @@ readonly class CreateAuthorAction
      * Призыватель
      *
      * @param AuthorRequest $request
+     * @param Author $author
      * @return JsonResponse
      */
-    public function __invoke(AuthorRequest $request): JsonResponse
+    public function __invoke(AuthorRequest $request, Author $author): JsonResponse
     {
-        $author = new Author();
-        $author->surname = $request->surname;
-        $author->name = $request->name;
-        $author->patronymic = $request->patronymic;
-
-        $author->save();
+        $author->update($request->validated());
         $result['data'] = [
-            'message' => 'Автор успешно создан.',
+            'message' => __('messages.success.author.updated'),
             'author' => new AuthorResource($author),
 
         ];
-        $result['status'] = Response::HTTP_CREATED;
+        $result['status'] = Response::HTTP_OK;
 
         return $this->responder->respond($result['data'], $result['status']);
     }

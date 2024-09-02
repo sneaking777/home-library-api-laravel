@@ -27,4 +27,16 @@ class Author extends Model
      */
     protected $table = 'authors';
 
+    /**
+     * @inheritdoc
+     *
+     * @var string[]
+     */
+    protected $fillable = [
+        'surname',
+        'name',
+        'patronymic'
+    ];
+
+
 }

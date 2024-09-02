@@ -51,7 +51,7 @@ readonly class UpdateBookAction
             Author::findOrFail($request->author_id);
             $book->update($request->validated());
             $result['data'] = [
-                'message' => 'Книга успешно обновлена.',
+                'message' => __('messages.success.book.updated'),
                 'book' => new BookResource($book->load('author')),
 
             ];
