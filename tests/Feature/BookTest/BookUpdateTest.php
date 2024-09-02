@@ -82,7 +82,7 @@ class BookUpdateTest extends BaseFeatureTest
         } else {
             $this->assertNull($patronymic);
         }
-        $response->assertJsonPath('message', 'Книга успешно обновлена.');
+        $response->assertJsonPath('message', __('messages.success.book.updated'));
         $response->assertJsonPath('book.id', $bookId);
         $response->assertJsonPath('book.title', $this->data['title']);
         $response->assertJsonPath('book.author.id', $this->data['author_id']);
@@ -106,7 +106,7 @@ class BookUpdateTest extends BaseFeatureTest
         $this->data['author_id'] = $book->author->id;
         $response = parent::makePutJsonRequest();
         $response = parent::assertResponseStatusAsUnauthorized($response);
-        $response->assertJson(['message' => 'Unauthenticated.']);
+        $response->assertJson(['message' => __('messages.unauthenticated')]);
     }
 
     /**

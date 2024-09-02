@@ -4,6 +4,7 @@ namespace AuthorTest;
 
 use App\Enums\GendersEnum;
 use App\FakerProviders\PatronymicFakerProvider;
+use Faker\Generator;
 use Tests\BaseFeatureTest;
 
 /**
@@ -42,7 +43,9 @@ class AuthorCreationTest extends BaseFeatureTest
         $firstName = $this->faker->firstName($gender);
         $lastName = $this->faker->lastName($gender);
         $fatherName = $this->faker->firstName(GendersEnum::MALE->value);
-        $patronymic = rand(1, 20) === 1 ? null : $this->faker->makeRussianPatronymic($gender, $fatherName);
+        /** @var Generator|PatronymicFakerProvider $fakerPatronymicProvider */
+        $fakerPatronymicProvider = $this->faker;
+        $patronymic = rand(1, 20) === 1 ? null : $fakerPatronymicProvider->makeRussianPatronymic($gender, $fatherName);
         $this->data = [
             'surname' => $lastName,
             'name' => $firstName,
@@ -99,7 +102,7 @@ class AuthorCreationTest extends BaseFeatureTest
      *
      * @return void
      */
-    public function test_author_creation_with_empty_surname()
+    public function test_author_creation_with_empty_surname(): void
     {
         $this->loginAsUser();
         $this->data['surname'] = '';
@@ -114,7 +117,7 @@ class AuthorCreationTest extends BaseFeatureTest
      *
      * @return void
      */
-    public function test_author_creation_with_empty_name()
+    public function test_author_creation_with_empty_name(): void
     {
         $this->loginAsUser();
         $this->data['name'] = '';
@@ -129,7 +132,7 @@ class AuthorCreationTest extends BaseFeatureTest
      *
      * @return void
      */
-    public function test_author_creation_with_name_exceeding_max_length()
+    public function test_author_creation_with_name_exceeding_max_length(): void
     {
         $this->loginAsUser();
         $this->data['name'] = str_repeat('a', 101);
@@ -143,7 +146,7 @@ class AuthorCreationTest extends BaseFeatureTest
      *
      * @return void
      */
-    public function test_author_creation_with_surname_exceeding_max_length()
+    public function test_author_creation_with_surname_exceeding_max_length(): void
     {
         $this->loginAsUser();
         $this->data['surname'] = str_repeat('a', 101);
@@ -157,7 +160,7 @@ class AuthorCreationTest extends BaseFeatureTest
      *
      * @return void
      */
-    public function test_author_creation_with_patronymic_exceeding_max_length()
+    public function test_author_creation_with_patronymic_exceeding_max_length(): void
     {
         $this->loginAsUser();
         $this->data['patronymic'] = str_repeat('a', 101);
@@ -171,7 +174,7 @@ class AuthorCreationTest extends BaseFeatureTest
      *
      * @return void
      */
-    public function test_author_creation_with_invalid_name_type()
+    public function test_author_creation_with_invalid_name_type(): void
     {
         $this->loginAsUser();
         $this->data['name'] = 111;
@@ -185,7 +188,7 @@ class AuthorCreationTest extends BaseFeatureTest
      *
      * @return void
      */
-    public function test_author_creation_with_invalid_surname_type()
+    public function test_author_creation_with_invalid_surname_type(): void
     {
         $this->loginAsUser();
         $this->data['surname'] = 111;
@@ -199,7 +202,7 @@ class AuthorCreationTest extends BaseFeatureTest
      *
      * @return void
      */
-    public function test_author_creation_with_invalid_patronymic_type()
+    public function test_author_creation_with_invalid_patronymic_type(): void
     {
         $this->loginAsUser();
         $this->data['patronymic'] = 111;
