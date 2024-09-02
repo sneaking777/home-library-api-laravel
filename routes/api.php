@@ -6,6 +6,7 @@ use App\Auth\Actions\LogoutAction;
 use App\Auth\Actions\RegisterAction;
 use App\Auth\Actions\ResetPasswordAction;
 use App\Authors\Actions\CreateAuthorAction;
+use App\Authors\Actions\ShowAuthorDetailAction;
 use App\Books\Actions\CreateBookAction;
 use App\Books\Actions\DeleteBookAction;
 use App\Books\Actions\ShowBookDetailAction;
@@ -41,6 +42,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('author')
         ->middleware('auth:sanctum')
         ->group(function () {
-        Route::post('/', CreateAuthorAction::class)->name('author.store');
-    });
+            Route::post('/', CreateAuthorAction::class)->name('author.store');
+            Route::get('/{author}', ShowAuthorDetailAction::class)->name('author.show');
+        });
 });

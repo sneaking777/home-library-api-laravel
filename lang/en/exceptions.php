@@ -14,7 +14,8 @@
 return [
     'not_found' => [
         'author' => 'The author of the book was not found.',
-        'book' => 'The requested book was not found.'
+        'book' => 'The requested book was not found.',
+        'resource' => 'The requested resource was not found.'
     ],
     'not_authorized' => 'The provided credentials are incorrect.',
     'invalid_argument' => [

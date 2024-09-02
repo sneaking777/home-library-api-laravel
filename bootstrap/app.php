@@ -26,11 +26,20 @@ return Application::configure(basePath: dirname(__DIR__))
             ) {
 
                 return response()->json([
-                    'message' => 'Запрашиваемая книга не найдена.'
+                    'message' => __('exceptions.not_found.book')
+                ], Response::HTTP_NOT_FOUND);
+            }
+            if (
+                $request->routeIs('author.show')
+                || $request->routeIs('author.update')
+                || $request->routeIs('author.destroy')
+            ) {
+                return response()->json([
+                    'message' => __('exceptions.not_found.author')
                 ], Response::HTTP_NOT_FOUND);
             }
             return response()->json([
-                'message' => 'Запрашиваемый ресурс не найден.'
+                'message' => __('exceptions.not_found.resource')
             ], Response::HTTP_NOT_FOUND);
         });
     })->create();
