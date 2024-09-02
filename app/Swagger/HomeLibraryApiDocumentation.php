@@ -4,7 +4,7 @@ namespace App\Swagger;
 
 use OpenApi\Attributes as OA;
 
-#[OA\Info(version: "0.7.0", title: "API Системы Управления Домашней Библиотекой")]
+#[OA\Info(version: "0.8.0", title: "API Системы Управления Домашней Библиотекой")]
 #[OA\Server(
     url: 'http://localhost/api/v1',
     description: 'Локальный сервер.',
@@ -21,7 +21,6 @@ use OpenApi\Attributes as OA;
     name: 'author',
     description: 'Все эндпоинты API, относящиеся к авторам'
 )]
-
 #[OA\Components(
     responses: [
         'not_found' => new OA\Response(
@@ -142,6 +141,15 @@ use OpenApi\Attributes as OA;
         'book' => new OA\Parameter(
             name: 'book',
             description: 'Идентификатор книги',
+            in: 'path',
+            required: true,
+            schema: new OA\Schema(
+                type: 'integer'
+            )
+        ),
+        'author' => new OA\Parameter(
+            name: 'author',
+            description: 'Идентификатор автора',
             in: 'path',
             required: true,
             schema: new OA\Schema(

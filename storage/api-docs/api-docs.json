@@ -2,7 +2,7 @@
     "openapi": "3.1.0",
     "info": {
         "title": "API Системы Управления Домашней Библиотекой",
-        "version": "0.7.0"
+        "version": "0.8.0"
     },
     "servers": [
         {
@@ -513,6 +513,71 @@
                 }
             }
         },
+        "/author/{author}": {
+            "get": {
+                "tags": [
+                    "author"
+                ],
+                "summary": "Информация о авторе",
+                "description": "Запрос на вывод детальной информации о авторе",
+                "operationId": "872cb5747e3ffe66d42f637db41ef2b2",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/author"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "description": "Данные об авторе.",
+                                            "properties": {
+                                                "id": {
+                                                    "description": "ID автора",
+                                                    "type": "integer"
+                                                },
+                                                "surname": {
+                                                    "description": "Фамилия.",
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "description": "Имя.",
+                                                    "type": "string"
+                                                },
+                                                "patronymic": {
+                                                    "description": "Отчество.",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 1,
+                                        "surname": "Иванов",
+                                        "name": "Иван",
+                                        "patronymic": "Иванович"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not_found"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    }
+                }
+            }
+        },
         "/book": {
             "post": {
                 "tags": [
@@ -954,6 +1019,15 @@
                 "name": "book",
                 "in": "path",
                 "description": "Идентификатор книги",
+                "required": true,
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "author": {
+                "name": "author",
+                "in": "path",
+                "description": "Идентификатор автора",
                 "required": true,
                 "schema": {
                     "type": "integer"
