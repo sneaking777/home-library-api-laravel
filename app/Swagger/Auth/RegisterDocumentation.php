@@ -148,7 +148,7 @@ use Symfony\Component\HttpFoundation\Response;
         )
     ]
 )]
-class RegisterAction
+class RegisterDocumentation
 {
 
 }

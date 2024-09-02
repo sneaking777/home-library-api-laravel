@@ -2,7 +2,7 @@
     "openapi": "3.1.0",
     "info": {
         "title": "API Системы Управления Домашней Библиотекой",
-        "version": "0.6.0"
+        "version": "0.7.0"
     },
     "servers": [
         {
@@ -18,7 +18,7 @@
                 ],
                 "summary": "Восстановление пароля",
                 "description": "Запрос на получение ссылки по email на восстановление пароля",
-                "operationId": "ebc784da7fb6aa4c4ab782d94e811929",
+                "operationId": "c9c7469e9ce95024f66ad3214c2edece",
                 "requestBody": {
                     "description": "JSON объект учетных данных пользователя для сброса пароля",
                     "content": {
@@ -91,7 +91,7 @@
                 ],
                 "summary": "Авторизация",
                 "description": "Запрос на идентификацию и авторизацию пользователя.",
-                "operationId": "071c12c73ada57d09296199486851f15",
+                "operationId": "1d79bc8c412efee515f071b286fe7e45",
                 "requestBody": {
                     "description": "JSON объект учетных данных пользователя",
                     "content": {
@@ -159,7 +159,7 @@
                 ],
                 "summary": "Выход",
                 "description": "Запрос на выход пользователя из системы.",
-                "operationId": "e0c2e4ed4cbb888d578e69d855f29b55",
+                "operationId": "1bfd9d171bebc74065d4dfc78d9d0df1",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -193,7 +193,7 @@
                 ],
                 "summary": "Регистрация",
                 "description": "Запрос на регистрацию пользователя.",
-                "operationId": "2ce5382d83f68a8e8443aeb4ebf7db62",
+                "operationId": "7682aaf57789a5a6d60dd1a77d5765b4",
                 "requestBody": {
                     "description": "JSON объект данных пользователя",
                     "content": {
@@ -328,7 +328,7 @@
                 ],
                 "summary": "Сброс пароля",
                 "description": "Запрос на сброс и получение нового пароля",
-                "operationId": "c41b6848f6e02f6bbd44b71fb1e9ecec",
+                "operationId": "f9dd9444674bc34de8899ef4f0a64fbb",
                 "requestBody": {
                     "description": "JSON объект учетных данных пользователя для сброса пароля",
                     "content": {
@@ -414,6 +414,105 @@
                 }
             }
         },
+        "/author": {
+            "post": {
+                "tags": [
+                    "author"
+                ],
+                "summary": "Создание автора",
+                "description": "Запрос на создание автора.",
+                "operationId": "d8405d97bcaba675a45464231c6bf103",
+                "requestBody": {
+                    "description": "JSON объект для создания нового автора",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "description": "Тело запроса.",
+                                "required": [
+                                    "surname",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "surname": {
+                                        "description": "Фамилия",
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "name": {
+                                        "description": "Имя",
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "patronymic": {
+                                        "description": "Отчество",
+                                        "type": "string",
+                                        "maxLength": 100
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "example": {
+                                "surname": "Иванов",
+                                "name": "Иван",
+                                "patronymic": "Иванович"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Автор успешно создан.",
+                                            "type": "string"
+                                        },
+                                        "author": {
+                                            "description": "Информация о авторе.",
+                                            "properties": {
+                                                "id": {
+                                                    "description": "Идентификатор автора.",
+                                                    "type": "integer"
+                                                },
+                                                "surname": {
+                                                    "description": "Фамилия автора",
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "description": "Имя автора",
+                                                    "type": "string"
+                                                },
+                                                "patronymic": {
+                                                    "description": "Отчество автора",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Автор успешно создан.",
+                                    "author": {
+                                        "id": 1,
+                                        "surname": "Иванов",
+                                        "name": "Иван",
+                                        "patronymic": "Иванович"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
+                    }
+                }
+            }
+        },
         "/book": {
             "post": {
                 "tags": [
@@ -421,7 +520,7 @@
                 ],
                 "summary": "Создание новой книги",
                 "description": "Запрос на создание книги.",
-                "operationId": "f8e5277f29dea63d344f5b9b4a84403a",
+                "operationId": "173f3a6722b2f15ec94dfd8ef13a627b",
                 "requestBody": {
                     "description": "JSON объект для создания новой книги",
                     "content": {
@@ -533,7 +632,7 @@
                 ],
                 "summary": "Информация о книге",
                 "description": "Запрос на вывод детальной информации о конкретной книге.",
-                "operationId": "a7fd9a8270fcbf3f328d0a7522f75d40",
+                "operationId": "b801f1686b5ae67663a85dff5d95b7d4",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/book"
@@ -614,7 +713,7 @@
                 ],
                 "summary": "Обновление книги",
                 "description": "Запрос на обновление информации о конкретной книге.",
-                "operationId": "7c92b1861a593a393fd4cba9ff826cb9",
+                "operationId": "0ecd2c1eec148b134fe72215da5461e4",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/book"
@@ -729,7 +828,7 @@
                 ],
                 "summary": "Удаление книги",
                 "description": "Запрос на удаление конкретной книги.",
-                "operationId": "5b2b123542f2cdd60641d79c4ed4369e",
+                "operationId": "a7b1998ab63ff811b087e83357d8a02e",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/book"
@@ -878,6 +977,10 @@
         {
             "name": "auth",
             "description": "Все эндпоинты API, относящиеся к аутентификации пользователя"
+        },
+        {
+            "name": "author",
+            "description": "Все эндпоинты API, относящиеся к авторам"
         }
     ],
     "security": [

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Класс LogoutAction
+ * Класс LogoutDocumentation
  *
  * Этот класс отвечает за обработку действий выхода пользователя из системы
  *

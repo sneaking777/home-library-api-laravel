@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Класс LoginAction
+ * Класс LoginDocumentation
  *
  * Этот класс отвечает за обработку действий авторизации пользователя в системе
  *

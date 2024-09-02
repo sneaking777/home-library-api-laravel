@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Класс RegisterAction
+ * Класс RegisterDocumentation
  *
  * Этот класс отвечает за обработку действий регистрации пользователя в системе
  *

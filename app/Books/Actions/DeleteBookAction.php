@@ -8,7 +8,7 @@ use Illuminate\Foundation\Application;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Класс DeleteBookAction
+ * Класс DeleteBookDocumentation
  *
  * Класс предназначен для удаления книги в приложении.
  *

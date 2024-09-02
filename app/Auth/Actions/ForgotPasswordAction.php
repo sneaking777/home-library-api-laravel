@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Password;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Класс ForgotPasswordAction
+ * Класс ForgotPasswordDocumentation
  *
  * Этот класс отвечает за обработку действий восстановления пароля пользователей
  *

@@ -33,7 +33,7 @@ use Symfony\Component\HttpFoundation\Response;
         ]
     )
 ]
-class DeleteBookAction
+class DeleteBookDocumentation
 {
 
 }

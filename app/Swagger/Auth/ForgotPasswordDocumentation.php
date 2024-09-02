@@ -80,7 +80,7 @@ use Symfony\Component\HttpFoundation\Response;
     ]
 
 )]
-class ForgotPasswordAction
+class ForgotPasswordDocumentation
 {
 
 }

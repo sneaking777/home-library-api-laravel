@@ -100,7 +100,7 @@ use Symfony\Component\HttpFoundation\Response;
     ]
 
 )]
-class ResetPasswordAction
+class ResetPasswordDocumentation
 {
 
 }

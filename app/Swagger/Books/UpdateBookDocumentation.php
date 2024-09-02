@@ -132,7 +132,7 @@ use Symfony\Component\HttpFoundation\Response;
         ]
     )
 ]
-class UpdateBookAction
+class UpdateBookDocumentation
 {
 
 }

@@ -6,7 +6,7 @@ use App\Http\Resources\BookResource;
 use App\Models\Book;
 
 /**
- * Класс ShowBookDetailAction
+ * Класс ShowBookDetailDocumentation
  *
  * Класс предназначен для обработки запросов на вывод детальной информации о конкретной книге
  *

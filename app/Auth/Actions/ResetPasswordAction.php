@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Password;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Класс ResetPasswordAction
+ * Класс ResetPasswordDocumentation
  *
  * Класс отвечает за валидацию и обработку входящих данных
  * при запросе пароля пользователем

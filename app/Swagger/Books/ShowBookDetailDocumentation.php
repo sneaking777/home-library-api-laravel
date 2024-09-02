@@ -6,71 +6,46 @@ use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Response;
 
 #[
-    OA\Post(
-        path: '/book',
-        description: 'Запрос на создание книги.',
-        summary: 'Создание новой книги',
-        requestBody: new OA\RequestBody(
-            description: 'JSON объект для создания новой книги',
-            content: [
-                "application/json" => new OA\MediaType(
-                    mediaType: "application/json",
-                    schema: new OA\Schema(
-                        description: 'Тело запроса.',
-                        required: ['title', 'author_id'],
-                        properties: [
-                            'title' => new OA\Property(
-                                property: 'title',
-                                description: 'Название книги',
-                                type: 'string'
-                            ),
-                            'author_id' => new OA\Property(
-                                property: 'author_id',
-                                description: 'ID автора книги.',
-                                type: 'integer'
-                            )
-                        ],
-                        type: 'object',
-                        maxLength: 150
-                    ),
-                    example: [
-                        "title" => "Как войти в IT.",
-                        "author_id" => 1
-                    ]
-                )
-            ]
-        ),
+    OA\Get(
+        path: '/book/{book}',
+        description: 'Запрос на вывод детальной информации о конкретной книге.',
+        summary: 'Информация о книге',
         tags: ['book'],
+        parameters: [
+            new OA\Parameter(
+                ref: "#/components/parameters/book",
+            )
+        ],
         responses: [
             new OA\Response(
-                response: Response::HTTP_CREATED,
-                description: 'Created',
+                response: Response::HTTP_OK,
+                description: 'OK',
                 content: [
                     "application/json" => new OA\MediaType(
                         mediaType: "application/json",
                         schema: new OA\Schema(
                             properties: [
-                                'message' => new OA\Property(
-                                    property: 'message',
-                                    description: 'Сообщение об успешном создании книги.',
-                                    type: 'string',
-                                ),
-                                'book' => new OA\Property(
-                                    property: 'book',
-                                    description: 'Информация о книге.',
+                                'data' => new OA\Property(
+                                    property: 'data',
+                                    description: 'Данные о книге',
                                     properties: [
                                         'id' => new OA\Property(
                                             property: 'id',
-                                            description: 'ID книги.',
+                                            description: 'ID книги',
                                             type: 'integer',
+                                        ),
+                                        'title' => new OA\Property(
+                                            property: 'title',
+                                            description: 'Название книги',
+                                            type: 'string',
                                         ),
                                         'author' => new OA\Property(
                                             property: 'author',
-                                            description: 'Информация о авторе книги.',
+                                            description: 'Автор книги.',
                                             properties: [
                                                 'id' => new OA\Property(
                                                     property: 'id',
-                                                    description: 'ID автора.',
+                                                    description: 'ID автора',
                                                     type: 'integer',
                                                 ),
                                                 'surname' => new OA\Property(
@@ -89,16 +64,16 @@ use Symfony\Component\HttpFoundation\Response;
                                                     type: 'string',
                                                 ),
                                             ],
-                                            type: "object"
-                                        )
+                                            type: 'object'
+                                        ),
                                     ],
                                     type: 'object'
-                                )
-                            ]
+                                ),
+                            ],
+                            type: "object"
                         ),
                         example: [
-                            'message' => 'Книга успешно создана.',
-                            "book" => [
+                            "data" => [
                                 "id" => 1,
                                 "title" => "Как войти в IT.",
                                 "author" => [
@@ -109,25 +84,20 @@ use Symfony\Component\HttpFoundation\Response;
                                 ],
                             ],
                         ]
-                    )
-                ]
-            ),
+                    ),
+                ]),
             new OA\Response(
                 ref: "#/components/responses/not_found",
                 response: Response::HTTP_NOT_FOUND,
-            ),
-            new OA\Response(
-                ref: "#/components/responses/book_validation_errors",
-                response: Response::HTTP_UNPROCESSABLE_ENTITY,
             ),
             new OA\Response(
                 ref: "#/components/responses/unauthenticated",
                 response: Response::HTTP_UNAUTHORIZED,
             )
         ]
-    )
-]
-class CreateBookAction
+
+    )]
+class ShowBookDetailDocumentation
 {
 
 }

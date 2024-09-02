@@ -12,7 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Класс UpdateBookAction
+ * Класс UpdateBookDocumentation
  *
  * Класс предназначен для обработки запросов на обновление информации о конкретной книге
  *

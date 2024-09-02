@@ -4,7 +4,7 @@ namespace App\Swagger;
 
 use OpenApi\Attributes as OA;
 
-#[OA\Info(version: "0.6.0", title: "API Системы Управления Домашней Библиотекой")]
+#[OA\Info(version: "0.7.0", title: "API Системы Управления Домашней Библиотекой")]
 #[OA\Server(
     url: 'http://localhost/api/v1',
     description: 'Локальный сервер.',
@@ -17,6 +17,11 @@ use OpenApi\Attributes as OA;
     name: 'auth',
     description: 'Все эндпоинты API, относящиеся к аутентификации пользователя'
 )]
+#[OA\Tag(
+    name: 'author',
+    description: 'Все эндпоинты API, относящиеся к авторам'
+)]
+
 #[OA\Components(
     responses: [
         'not_found' => new OA\Response(

@@ -10,7 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Класс CreateAuthorAction
+ * Класс CreateAuthorDocumentation
  *
  * Класс предназначен для создания нового автора в приложении.
  * В частности, он обрабатывает запросы на создание новых авторов и сохраняет их в хранилище данных

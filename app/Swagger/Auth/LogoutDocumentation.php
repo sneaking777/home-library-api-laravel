@@ -38,7 +38,7 @@ use Symfony\Component\HttpFoundation\Response;
         ),
     ]
 )]
-class LogoutAction
+class LogoutDocumentation
 {
 
 }

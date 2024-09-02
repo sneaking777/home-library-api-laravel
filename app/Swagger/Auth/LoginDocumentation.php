@@ -77,7 +77,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 )
 ]
-class LoginAction
+class LoginDocumentation
 {
 
 }
