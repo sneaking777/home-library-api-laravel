@@ -6,6 +6,7 @@ use App\Auth\Actions\LogoutAction;
 use App\Auth\Actions\RegisterAction;
 use App\Auth\Actions\ResetPasswordAction;
 use App\Authors\Actions\CreateAuthorAction;
+use App\Authors\Actions\DeleteAuthorAction;
 use App\Authors\Actions\ShowAuthorDetailAction;
 use App\Authors\Actions\UpdateAuthorAction;
 use App\Books\Actions\CreateBookAction;
@@ -46,6 +47,6 @@ Route::prefix('v1')->group(function () {
             Route::post('/', CreateAuthorAction::class)->name('author.store');
             Route::get('/{author}', ShowAuthorDetailAction::class)->name('author.show');
             Route::put('/{author}', UpdateAuthorAction::class)->name('author.update');
-            Route::delete('/{author}', DeleteBookAction::class)->name('author.destroy');
+            Route::delete('/{author}', DeleteAuthorAction::class)->name('author.destroy');
         });
 });

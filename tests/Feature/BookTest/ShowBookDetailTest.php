@@ -51,6 +51,9 @@ class ShowBookDetailTest extends BaseFeatureTest
                 ],
             ]
         );
+        $book = Book::factory()->create();
+        $this->route = route('book.show', ['book' => $book->id]);
+        $this->pathParameters['book'] = $book->id;
     }
 
     /**
@@ -61,12 +64,10 @@ class ShowBookDetailTest extends BaseFeatureTest
     public function test_show_book_detail(): void
     {
         $this->loginAsUser();
-        $book = Book::factory()->create();
-        $this->route = route('book.show', ['book' => $book->id]);
         $response = parent::makeGetJsonRequest();
         $response = parent::assertResponseStatusAsOk($response);
         $response->assertJsonStructure($this->getResponseJsonStructure());
-        $response->assertJsonPath('data.id', $book->id);
+        $response->assertJsonPath('data.id', $this->pathParameters['book']);
         $responseData = $response->json();
         $this->assertIsArray($responseData['data']);
         $this->assertIsInt($responseData['data']['id']);
@@ -102,8 +103,6 @@ class ShowBookDetailTest extends BaseFeatureTest
      */
     public function test_show_book_detail_without_auth()
     {
-        $book = Book::factory()->create();
-        $this->route = route('book.show', ['book' => $book->id]);
         $response = parent::makeGetJsonRequest();
         $response = parent::assertResponseStatusAsUnauthorized($response);
         $response->assertJson(['message' => __('messages.unauthenticated')]);

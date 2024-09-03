@@ -34,7 +34,9 @@ class BookDeleteTest extends BaseFeatureTest
         parent::setUp();
         $this->setResponseJsonStructure([]);
         $book = Book::factory()->create();
-        $this->route = route('book.update', ['book' => $book->id]);
+        $this->route = route('book.destroy', ['book' => $book->id]);
+        $this->pathParameters['book'] = $book->id;
+
     }
 
     /**
@@ -45,17 +47,13 @@ class BookDeleteTest extends BaseFeatureTest
     public function test_book_delete()
     {
         $this->loginAsUser();
-        $urlParts = parse_url($this->route);
-        $pathParts = explode('/', $urlParts['path']);
-        $bookId = (int)end($pathParts);
-        $this->route = route('book.destroy', ['book' => $bookId]);
-        $this->assertDatabaseHas('books', ['id' => $bookId]);
+        $this->assertDatabaseHas('books', ['id' => $this->pathParameters['book']]);
         $response = parent::makeDeleteJsonRequest();
-        $this->assertSoftDeleted('books', ['id' => $bookId]);
+        $this->assertSoftDeleted('books', ['id' => $this->pathParameters['book']]);
         $response = parent::assertResponseStatusAsNoContent($response);
         $this->assertEmpty($response->getContent());
         $response = parent::makeDeleteJsonRequest();
-        $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        parent::assertResponseStatusAsNotFound($response);
 
     }
 
@@ -66,14 +64,10 @@ class BookDeleteTest extends BaseFeatureTest
      */
     public function test_book_delete_without_auth()
     {
-        $urlParts = parse_url($this->route);
-        $pathParts = explode('/', $urlParts['path']);
-        $bookId = (int)end($pathParts);
-        $this->route = route('book.destroy', ['book' => $bookId]);
-        $this->assertDatabaseHas('books', ['id' => $bookId]);
+        $this->assertDatabaseHas('books', ['id' => $this->pathParameters['book']]);
         $response = parent::makeDeleteJsonRequest();
         $response = parent::assertResponseStatusAsUnauthorized($response);
-        $response->assertJson(['message' => 'Unauthenticated.']);
+        $response->assertJson(['message' => __('messages.unauthenticated')]);
     }
 
     /**

@@ -35,6 +35,9 @@ class ShowAuthorDetailTest extends BaseFeatureTest
                 ],
             ]
         );
+        $author = Author::factory()->create();
+        $this->route = route('author.show', ['author' => $author->id]);
+        $this->pathParameters['author'] = $author->id;
     }
 
     /**
@@ -45,12 +48,10 @@ class ShowAuthorDetailTest extends BaseFeatureTest
     public function test_show_author_detail(): void
     {
         $this->loginAsUser();
-        $author = Author::factory()->create();
-        $this->route = route('author.show', ['author' => $author->id]);
         $response = parent::makeGetJsonRequest();
         $response = parent::assertResponseStatusAsOk($response);
         $response->assertJsonStructure($this->getResponseJsonStructure());
-        $response->assertJsonPath('data.id', $author->id);
+        $response->assertJsonPath('data.id', $this->pathParameters['author']);
         $responseData = $response->json();
         $this->assertIsArray($responseData['data']);
         $this->assertIsInt($responseData['data']['id']);
@@ -72,8 +73,7 @@ class ShowAuthorDetailTest extends BaseFeatureTest
      */
     public function test_show_author_detail_without_auth(): void
     {
-        $author = Author::factory()->create();
-        $this->route = route('author.show', ['author' => $author->id]);
+        $this->route = route('author.show', ['author' => $this->pathParameters['author']]);
         $response = parent::makeGetJsonRequest();
         $response = parent::assertResponseStatusAsUnauthorized($response);
         $response->assertJson(['message' => __('messages.unauthenticated')]);

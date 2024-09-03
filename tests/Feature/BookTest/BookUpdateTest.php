@@ -48,6 +48,7 @@ class BookUpdateTest extends BaseFeatureTest
         ];
         $book = Book::factory()->create();
         $this->route = route('book.update', ['book' => $book->id]);
+        $this->pathParameters['book'] = $book->id;
     }
 
     /**
@@ -58,11 +59,7 @@ class BookUpdateTest extends BaseFeatureTest
     public function test_book_update()
     {
         $this->loginAsUser();
-        $urlParts = parse_url($this->route);
-        $pathParts = explode('/', $urlParts['path']);
-        $bookId = (int)end($pathParts);
-        $this->route = route('book.update', ['book' => $bookId]);
-        $book = Book::with('author')->find($bookId);
+        $book = Book::with('author')->find($this->pathParameters['book']);
         $this->data['author_id'] = $book->author->id;
         $response = parent::makePutJsonRequest();
         $response = parent::assertResponseStatusAsOk($response);
@@ -83,7 +80,7 @@ class BookUpdateTest extends BaseFeatureTest
             $this->assertNull($patronymic);
         }
         $response->assertJsonPath('message', __('messages.success.book.updated'));
-        $response->assertJsonPath('book.id', $bookId);
+        $response->assertJsonPath('book.id', $this->pathParameters['book']);
         $response->assertJsonPath('book.title', $this->data['title']);
         $response->assertJsonPath('book.author.id', $this->data['author_id']);
         $response->assertJsonPath('book.author.surname', $book->author->surname);
@@ -98,11 +95,8 @@ class BookUpdateTest extends BaseFeatureTest
      */
     public function test_book_update_without_auth()
     {
-        $urlParts = parse_url($this->route);
-        $pathParts = explode('/', $urlParts['path']);
-        $bookId = (int)end($pathParts);
-        $this->route = route('book.update', ['book' => $bookId]);
-        $book = Book::with('author')->find($bookId);
+        $this->route = route('book.update', ['book' => $this->pathParameters['book']]);
+        $book = Book::with('author')->find($this->pathParameters['book']);
         $this->data['author_id'] = $book->author->id;
         $response = parent::makePutJsonRequest();
         $response = parent::assertResponseStatusAsUnauthorized($response);
@@ -132,9 +126,7 @@ class BookUpdateTest extends BaseFeatureTest
     {
         $this->loginAsUser();
         $this->data['title'] = str_repeat('Sample Book Title ', 15);
-
         $response = parent::makePutJsonRequest();
-
         $response = parent::assertResponseStatusAsUnprocessableEntity($response);
         $response->assertJsonValidationErrors(['title']);
     }

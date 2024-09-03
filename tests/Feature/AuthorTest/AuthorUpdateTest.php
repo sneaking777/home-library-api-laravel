@@ -54,6 +54,7 @@ class AuthorUpdateTest extends BaseFeatureTest
         ];
         $author = Author::factory()->create();
         $this->route = route('author.update', ['author' => $author->id]);
+        $this->pathParameters['author'] = $author->id;
     }
 
     /**
@@ -64,10 +65,6 @@ class AuthorUpdateTest extends BaseFeatureTest
     public function test_author_update(): void
     {
         $this->loginAsUser();
-        $urlParts = parse_url($this->route);
-        $pathParts = explode('/', $urlParts['path']);
-        $authorId = (int)end($pathParts);
-        $this->route = route('author.update', ['author' => $authorId]);
         $response = parent::makePutJsonRequest();
         $response = parent::assertResponseStatusAsOk($response);
         $response->assertJsonStructure($this->getResponseJsonStructure());
@@ -84,7 +81,7 @@ class AuthorUpdateTest extends BaseFeatureTest
             $this->assertNull($patronymic);
         }
         $response->assertJsonPath('message', __('messages.success.author.updated'));
-        $response->assertJsonPath('author.id', $authorId);
+        $response->assertJsonPath('author.id', $this->pathParameters['author']);
         $response->assertJsonPath('author.surname', $this->data['surname']);
         $response->assertJsonPath('author.name', $this->data['name']);
         $response->assertJsonPath('author.patronymic', $this->data['patronymic']);
@@ -97,10 +94,6 @@ class AuthorUpdateTest extends BaseFeatureTest
      */
     public function test_author_update_without_auth(): void
     {
-        $urlParts = parse_url($this->route);
-        $pathParts = explode('/', $urlParts['path']);
-        $authorId = (int)end($pathParts);
-        $this->route = route('author.update', ['author' => $authorId]);
         $response = parent::makePutJsonRequest();
         $response = parent::assertResponseStatusAsUnauthorized($response);
         $response->assertJson(['message' => __('messages.unauthenticated')]);
