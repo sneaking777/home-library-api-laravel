@@ -18,6 +18,11 @@ use Tests\BaseFeatureTest;
 class RegisterTest extends BaseFeatureTest
 {
 
+    /**
+     * @inheritdoc
+     *
+     * @return void
+     */
     protected function setUp(): void
     {
         parent::setUp();

@@ -39,18 +39,10 @@ class AuthorUpdateTest extends BaseFeatureTest
                 ]
             ]
         );
-        $gender = rand(1, 2) === 1 ? GendersEnum::MALE->value : GendersEnum::FEMALE->value;
-        $this->faker->addProvider(new PatronymicFakerProvider($this->faker));
-        $firstName = $this->faker->firstName($gender);
-        $lastName = $this->faker->lastName($gender);
-        $fatherName = $this->faker->firstName(GendersEnum::MALE->value);
-        /** @var Generator|PatronymicFakerProvider $fakerPatronymicProvider */
-        $fakerPatronymicProvider = $this->faker;
-        $patronymic = rand(1, 20) === 1 ? null : $fakerPatronymicProvider->makeRussianPatronymic($gender, $fatherName);
         $this->data = [
-            'surname' => $lastName,
-            'name' => $firstName,
-            'patronymic' => $patronymic,
+            'surname' => 'Иванов',
+            'name' => 'Иван',
+            'patronymic' => 'Иванович',
         ];
         $author = Author::factory()->create();
         $this->route = route('author.update', ['author' => $author->id]);
