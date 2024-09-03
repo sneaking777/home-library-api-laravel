@@ -2,7 +2,7 @@
     "openapi": "3.1.0",
     "info": {
         "title": "API Системы Управления Домашней Библиотекой",
-        "version": "0.8.0"
+        "version": "0.10.0"
     },
     "servers": [
         {
@@ -678,6 +678,30 @@
                     },
                     "404": {
                         "$ref": "#/components/responses/not_found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "author"
+                ],
+                "summary": "Удаление автора",
+                "description": "Запрос на удаление автора.",
+                "operationId": "832182e4af387f173cc8dfec02c2b151",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/author"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not_found"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthenticated"
                     }
                 }
             }
