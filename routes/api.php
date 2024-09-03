@@ -46,5 +46,6 @@ Route::prefix('v1')->group(function () {
             Route::post('/', CreateAuthorAction::class)->name('author.store');
             Route::get('/{author}', ShowAuthorDetailAction::class)->name('author.show');
             Route::put('/{author}', UpdateAuthorAction::class)->name('author.update');
+            Route::delete('/{author}', DeleteBookAction::class)->name('author.destroy');
         });
 });
