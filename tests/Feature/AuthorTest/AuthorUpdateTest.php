@@ -75,17 +75,41 @@ class AuthorUpdateTest extends BaseFeatureTest
         $this->assertIsString($responseData['author']['surname']);
         $this->assertIsString($responseData['author']['name']);
         $patronymic = $responseData['author']['patronymic'];
-        if ($patronymic !== null) {
-            $this->assertIsString($patronymic);
-        } else {
-            $this->assertNull($patronymic);
-        }
+        $this->assertIsString($patronymic);
         $response->assertJsonPath('message', __('messages.success.author.updated'));
         $response->assertJsonPath('author.id', $this->pathParameters['author']);
         $response->assertJsonPath('author.surname', $this->data['surname']);
         $response->assertJsonPath('author.name', $this->data['name']);
         $response->assertJsonPath('author.patronymic', $this->data['patronymic']);
     }
+
+    /**
+     * Сценарий обновления автора c отсутствующим отчеством
+     *
+     * @return void
+     */
+    public function test_author_update_with_empty_patronymic(): void
+    {
+        $this->loginAsUser();
+        $this->data['patronymic'] = null;
+        $response = parent::makePutJsonRequest();
+        $response = parent::assertResponseStatusAsOk($response);
+        $response->assertJsonStructure($this->getResponseJsonStructure());
+        $responseData = $response->json();
+        $this->assertIsString($responseData['message']);
+        $this->assertIsArray($responseData['author']);
+        $this->assertIsInt($responseData['author']['id']);
+        $this->assertIsString($responseData['author']['surname']);
+        $this->assertIsString($responseData['author']['name']);
+        $patronymic = $responseData['author']['patronymic'];
+        $this->assertNull($patronymic);
+        $response->assertJsonPath('message', __('messages.success.author.updated'));
+        $response->assertJsonPath('author.id', $this->pathParameters['author']);
+        $response->assertJsonPath('author.surname', $this->data['surname']);
+        $response->assertJsonPath('author.name', $this->data['name']);
+        $response->assertJsonPath('author.patronymic', $this->data['patronymic']);
+    }
+
 
     /**
      * Сценарий обновления автора без авторизации
@@ -128,21 +152,6 @@ class AuthorUpdateTest extends BaseFeatureTest
         $response = parent::makePutJsonRequest();
         $response = parent::assertResponseStatusAsUnprocessableEntity($response);
         $response->assertJsonValidationErrors(['name']);
-    }
-
-    /**
-     * Сценарий обновления автора с пустым отчеством
-     *
-     * @return void
-     */
-    public function test_author_update_with_empty_patronymic(): void
-    {
-        $this->loginAsUser();
-        $this->data['patronymic'] = '';
-
-        $response = parent::makePutJsonRequest();
-        $response = parent::assertResponseStatusAsUnprocessableEntity($response);
-        $response->assertJsonValidationErrors(['patronymic']);
     }
 
     /**
